@@ -26,11 +26,14 @@ public:
     bool addConnection(Connection *connection);
     // Function to remove an edge/connection between user1 and user2
     bool removeConnection(const string &src, const string &dest);
+
+    bool isUserNameTaken(const string &userName);
     // Function to delete all connections of a user
     void deleteConnectionsOfUser(const string &username);
     vector<string> getConnectedUsers(const string &userName);
+
     UserProfile *searchUser(const string &username);
-    
+
     bool addUser(UserProfile *user);
     // Function to remove a user from the graph
     bool removeUser(const string &username);

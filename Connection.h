@@ -80,7 +80,7 @@ public:
 
   /***** Setters *****/
   void setSource(UserProfile *source);
-  /*-------------------------------------------------------------------------
+  /*------------------------------------  -------------------------------------
     Set the source UserProfile of the connection.
 
     Preconditions:  The 'source' parameter is a valid pointer to a UserProfile object.

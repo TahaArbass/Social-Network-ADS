@@ -113,6 +113,15 @@ bool Graph::removeConnection(const string &src, const string &dest)
   return false;
 }
 
+bool Graph::isUserNameTaken(const string &userName)
+{
+  if (users.find(userName) != users.end())
+  {
+    return true;
+  }
+  return false;
+}
+
 // Function to search for a user in the graph
 UserProfile *Graph::searchUser(const string &username)
 {
@@ -516,46 +525,45 @@ vector<string> Graph::getConnectedUsers(const string &userName)
 
 void Graph::generateDOTFile(const string &fileName)
 {
-    ofstream dotFile(fileName);
-    if (!dotFile.is_open())
+  ofstream dotFile(fileName);
+  if (!dotFile.is_open())
+  {
+    cerr << "Error: Unable to open DOT file for writing\n";
+    return;
+  }
+
+  // Write DOT file header
+  dotFile << "graph G {\n";
+  dotFile << "  graph [splines=true, overlap=false, fontsize=10];\n";
+  dotFile << "  node [style=filled, fillcolor=\"#f0f0f0\", shape=ellipse, fontcolor=black, fontsize=12];\n";
+  dotFile << "  edge [fontcolor=\"#666666\", fontsize=8, color=\"#999999\", penwidth=1.5];\n";
+
+  // Write node properties
+  for (const auto &entry : users)
+  {
+    string userName = entry.first;
+    dotFile << "  " << userName << ";\n";
+  }
+
+  // Write edge properties
+  for (const auto &entry : adj)
+  {
+    const string &source = entry.first;
+    for (const auto &connection : entry.second)
     {
-        cerr << "Error: Unable to open DOT file for writing\n";
-        return;
+      const string &destination = connection->getDestination()->getUserName();
+      if (source != destination) // Avoid creating edges from a node to itself
+      {
+        dotFile << "  " << source << " -- " << destination << " [label=\"" << connection->getWeight() << "\"];\n";
+      }
     }
+  }
 
-    // Write DOT file header
-    dotFile << "graph G {\n";
-    dotFile << "  graph [splines=true, overlap=false, fontsize=10];\n";
-    dotFile << "  node [style=filled, fillcolor=\"#f0f0f0\", shape=ellipse, fontcolor=black, fontsize=12];\n";
-    dotFile << "  edge [fontcolor=\"#666666\", fontsize=8, color=\"#999999\", penwidth=1.5];\n";
+  // Write DOT file footer
+  dotFile << "}\n";
 
-    // Write node properties
-    for (const auto &entry : users)
-    {
-        string userName = entry.first;
-        dotFile << "  " << userName << ";\n";
-    }
-
-    // Write edge properties
-    for (const auto &entry : adj)
-    {
-        const string &source = entry.first;
-        for (const auto &connection : entry.second)
-        {
-            const string &destination = connection->getDestination()->getUserName();
-            if (source != destination) // Avoid creating edges from a node to itself
-            {
-                dotFile << "  " << source << " -- " << destination << " [label=\"" << connection->getWeight() << "\"];\n";
-            }
-        }
-    }
-
-    // Write DOT file footer
-    dotFile << "}\n";
-
-    dotFile.close();
+  dotFile.close();
 }
-
 
 void Graph::renderGraph(const string &dotFileName, const string &outputFileName)
 {
