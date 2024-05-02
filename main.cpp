@@ -6,8 +6,8 @@
 
 int main()
 {
-    const int numUsers = 10;       // Number of users
-    const int numConnections = 20; // Number of connections
+    const int numUsers = 40;       // Number of users
+    const int numConnections = 100; // Number of connections
 
     // Create user profiles
     vector<UserProfile *> users;

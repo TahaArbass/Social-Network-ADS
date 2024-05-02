@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Dell/Desktop/Ads_demo_fares",
-      "program": "c:/Users/Dell/Desktop/Ads_demo_fares/build/Debug/outDebug",
+      "cwd": "c:/Users/Dell/Documents/GitHub/Social-Network-ADS",
+      "program": "c:/Users/Dell/Documents/GitHub/Social-Network-ADS/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
