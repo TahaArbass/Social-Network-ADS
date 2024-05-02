@@ -472,71 +472,20 @@ vector<string> Graph::getConnectedUsers(const string &userName)
   return connectedUsers;
 }
 
-// void Graph::generateDOTFile(const string &fileName)
-// {
-//   ofstream dotFile(fileName);
-//   if (!dotFile.is_open())
-//   {
-//     cerr << "Error: Unable to open DOT file for writing\n";
-//     return;
-//   }
-
-//   // Write DOT file header
-//   dotFile << "graph G {\n";
-
-//   // Write node properties
-//   for (const auto &entry : users)
-//   {
-//     string userName = entry.first;
-//     dotFile << "  " << userName << " [";
-//     // Add custom properties for nodes based on user characteristics
-//     dotFile << "label=\"" << userName << "\", ";
-//     dotFile << "shape=ellipse, ";
-//     dotFile << "fontcolor=black, ";
-//     dotFile << "fontsize=10, ";
-//     dotFile << "style=filled, ";
-//     dotFile << "fillcolor=\"#f0f0f0\", "; // Light gray fill color
-//     dotFile << "color=\"#666666\"";       // Dark gray border color
-//     dotFile << "];\n";
-//   }
-
-//   // Write edge properties
-//   for (const auto &entry : adj)
-//   {
-//     const string &source = entry.first;
-//     for (const auto &connection : entry.second)
-//     {
-//       const string &destination = connection->getDestination()->getUserName();
-//       dotFile << "  " << source << " -- " << destination << " [";
-//       // Add custom properties for edges based on connection characteristics
-//       dotFile << "label=\"" << connection->getWeight() << "\", ";
-//       dotFile << "fontsize=8, ";
-//       dotFile << "fontcolor=\"#666666\", "; // Dark gray font color
-//       dotFile << "color=\"#999999\"";       // Light gray edge color
-//       dotFile << "];\n";
-//     }
-//   }
-
-//   // Write DOT file footer
-//   dotFile << "}\n";
-
-//   dotFile.close();
-// }
-
 void Graph::generateDOTFile(const string &fileName)
 {
-  ofstream dotFile(fileName);
-  if (!dotFile.is_open())
-  {
-    cerr << "Error: Unable to open DOT file for writing\n";
-    return;
-  }
+    ofstream dotFile(fileName);
+    if (!dotFile.is_open())
+    {
+        cerr << "Error: Unable to open DOT file for writing\n";
+        return;
+    }
 
-  // Write DOT file header
-  dotFile << "graph G {\n";
-  dotFile << "  graph [splines=true, overlap=false, fontsize=10];\n";
-  dotFile << "  node [style=filled, fillcolor=\"#f0f0f0\", shape=ellipse, fontcolor=black, fontsize=12];\n";
-  dotFile << "  edge [fontcolor=\"#666666\", fontsize=8, color=\"#999999\", penwidth=1.5];\n";
+    // Write DOT file header
+    dotFile << "graph G {\n";
+    dotFile << "  graph [splines=true, overlap=false, fontsize=10];\n";
+    dotFile << "  node [style=filled, fillcolor=\"#f0f0f0\", shape=ellipse, fontcolor=black, fontsize=12];\n";
+    dotFile << "  edge [fontcolor=\"#666666\", fontsize=8, color=\"#999999\", penwidth=1.5];\n";
 
   // Write node properties
   for (const auto &entry : users)
@@ -545,19 +494,19 @@ void Graph::generateDOTFile(const string &fileName)
     dotFile << "  " << userName << ";\n";
   }
 
-  // Write edge properties
-  for (const auto &entry : adj)
-  {
-    const string &source = entry.first;
-    for (const auto &connection : entry.second)
+    // Write edge properties
+    for (const auto &entry : adj)
     {
-      const string &destination = connection->getDestination()->getUserName();
-      if (source != destination) // Avoid creating edges from a node to itself
-      {
-        dotFile << "  " << source << " -- " << destination << " [label=\"" << connection->getWeight() << "\"];\n";
-      }
+        const string &source = entry.first;
+        for (const auto &connection : entry.second)
+        {
+            const string &destination = connection->getDestination()->getUserName();
+            if (source != destination) // Avoid creating edges from a node to itself
+            {
+                dotFile << "  " << source << " -- " << destination << " [label=\"" << connection->getWeight() << "\"];\n";
+            }
+        }
     }
-  }
 
   // Write DOT file footer
   dotFile << "}\n";
@@ -565,19 +514,21 @@ void Graph::generateDOTFile(const string &fileName)
   dotFile.close();
 }
 
+
 void Graph::renderGraph(const string &dotFileName, const string &outputFileName)
 {
-  // Invoke Graphviz to render the DOT file
-  string command = "dot -Tpng " + dotFileName + " -o " + outputFileName;
-  int result = system(command.c_str());
-  if (result != 0)
-  {
-    cerr << "Error: Failed to render graph using Graphviz\n";
-    return;
-  }
+    // Invoke Graphviz to render the DOT file
+    string command = "dot -Tpng " + dotFileName + " -o " + outputFileName;
+    int result = system(command.c_str());
+    if (result != 0)
+    {
+        cerr << "Error: Failed to render graph using Graphviz\n";
+        return;
+    }
 
-  cout << "Graph visualization saved as " << outputFileName << endl;
+    cout << "Graph visualization saved as " << outputFileName << endl;
 }
+
 
 // Function to perform Depth First Search traversal
 vector<string> Graph::dfsTraversal(const string &startUserName)
@@ -611,3 +562,84 @@ void Graph::dfsUtil(const string &node, unordered_set<string> &visited, vector<s
     }
   }
 }
+
+// Function to calculate the average degree of the graph
+double Graph::calculateAverageDegree() {
+    if (adj.empty() || users.empty()){
+        return 0.0;
+    }
+
+    double totalDegree = 0.0;
+    for (const auto& entry : adj) {
+        totalDegree += entry.second.size();
+    }
+
+    return totalDegree / users.size();
+}
+
+
+// Function to calculate the diameter of the graph
+int Graph::calculateDiameter() {
+    if (users.empty()) {
+        return -1;
+    }
+
+    int diameter = 0;
+    const int INF = std::numeric_limits<int>::max(); // Declare INF constant
+
+    // Iterate through each vertex and find the maximum shortest path
+    for (const auto& entry : users) {
+        const string& src = entry.first;
+        vector<int> dist = shortestPath(src);
+
+        // Find the maximum distance in the shortest paths
+        for (int d : dist) {
+            if (d != INF && d > diameter) {
+                diameter = d;
+            }
+        }
+    }
+
+    return diameter;
+}
+
+// Function to calculate shortest paths from a source node
+vector<int> Graph::shortestPath(const string& src) {
+    const int INF = std::numeric_limits<int>::max(); // Declare INF constant
+    unordered_map<string, int> distance; // Map to store distances from the source node
+    queue<string> q; // Queue for BFS traversal
+
+    // Initialize distances
+    for (const auto& entry : users) {
+        distance[entry.first] = INF;
+    }
+
+    // Enqueue the source node
+    q.push(src);
+    distance[src] = 0;
+
+    // Perform BFS
+    while (!q.empty()) {
+        string u = q.front();
+        q.pop();
+        // Iterate through all adjacent nodes of u
+        for (auto connection : adj[u]) {
+            string v = (connection->getSource()->getUserName() == u) ?
+                            connection->getDestination()->getUserName() :
+                            connection->getSource()->getUserName();
+            // If v is not visited yet
+            if (distance[v] == INF) {
+                distance[v] = distance[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+
+    // Convert distances to vector
+    vector<int> dist;
+    for (const auto& entry : users) {
+        dist.push_back(distance[entry.first]);
+    }
+    return dist;
+}
+

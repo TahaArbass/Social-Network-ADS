@@ -1,4 +1,5 @@
 graph G {
+<<<<<<< Updated upstream
   graph [splines=true, overlap=false, fontsize=10];
   node [style=filled, fillcolor="#f0f0f0", shape=ellipse, fontcolor=black, fontsize=12];
   edge [fontcolor="#666666", fontsize=8, color="#999999", penwidth=1.5];
@@ -138,4 +139,59 @@ graph G {
   user18 -- user27 [label="6"];
   user24 -- user19 [label="4"];
   user24 -- user12 [label="10"];
+=======
+  graph [layout=neato, splines=true, overlap=false, fontsize=12, nodesep=10];
+  node [style=filled, fillcolor="#f0f0f0", shape=ellipse, fontcolor=black, fontsize=16];
+  edge [fontcolor="black", fontsize=14, color="#3366ff", penwidth=6];
+  User20;
+  User18;
+  User17;
+  User15;
+  User14;
+  User1;
+  User4;
+  User7;
+  User3;
+  User5;
+  User19;
+  User6;
+  User2;
+  User8;
+  User11;
+  User16;
+  User13;
+  User9;
+  User10;
+  User12;
+  User4 -- User5 [label="5", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User11 -- User10 [label="1", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User11 -- User7 [label="2", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User9 -- User7 [label="6", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User18 -- User20 [label="4", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User2 -- User8 [label="5", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User2 -- User12 [label="6", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User2 -- User17 [label="9", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User2 -- User10 [label="9", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User8 -- User5 [label="3", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User16 -- User8 [label="7", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User16 -- User15 [label="4", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User13 -- User8 [label="10", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User1 -- User10 [label="5", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User1 -- User3 [label="5", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User12 -- User5 [label="3", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User12 -- User19 [label="10", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User12 -- User3 [label="4", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User12 -- User14 [label="9", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User17 -- User16 [label="1", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User17 -- User1 [label="7", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User17 -- User12 [label="9", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User3 -- User8 [label="7", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User3 -- User9 [label="7", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User14 -- User13 [label="3", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User14 -- User5 [label="2", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User14 -- User9 [label="10", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User19 -- User3 [label="5", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User6 -- User2 [label="8", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+  User5 -- User20 [label="7", fontsize=12, fontname="Helvetica-Bold", penwidth=2, color="#3366ff"];
+>>>>>>> Stashed changes
 }

@@ -216,6 +216,46 @@ void addConnectionBetweenUsers(Graph &graph)
         cout << "Failed to add connection. One or both users not found or connection already exists." << endl;
         delete connection; // Clean up memory
     }
+<<<<<<< Updated upstream
+=======
+
+    // Test A* algorithm to find the shortest path between user1 and user6
+    vector<UserProfile *> shortestPath = graph.astar(user1Name, user6Name);
+
+    // Display the shortest path
+    cout << "A* Shortest Path from " << user1Name << " to " << user6Name << ":\n";
+    for (UserProfile *user : shortestPath)
+    {
+        cout << user->getUserName() << " -> ";
+    }
+    cout << endl;
+
+    // display the shortest path using digkistra
+    vector<UserProfile *> shortestPathDijkistra = graph.dijkstra(user1Name, user6Name);
+    cout << "Djikstra Shortest path from " << user1Name << "to " << user6Name << ":\n";
+
+    for (UserProfile *user : shortestPathDijkistra)
+    {
+        cout << user->getUserName() << "->";
+    }
+
+    cout << endl;
+    // Generate DOT file
+    graph.generateDOTFile("graph.dot");
+
+    // Render the graph using Graphviz
+    graph.renderGraph("graph.dot", "graph.png");
+
+    // Clean up memory
+    for (auto user : users)
+    {
+        delete user;
+    }
+
+    graph.~Graph();
+
+    return 0;
+>>>>>>> Stashed changes
 }
 
 void deleteConnectionBetweenUsers(Graph &graph)

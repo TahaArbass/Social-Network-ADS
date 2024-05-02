@@ -51,9 +51,6 @@ public:
     // Function to print the adjacency list representation of the graph
     void printGraph();
 
-    // Function to find the shortest path between two users using BFS
-    vector<UserProfile *> shortestPath(const string &src, const string &dest);
-
     vector<string> dfsTraversal(const string &startUserName);
     vector<string> bfsTraversal(const string &startUserName);
 
@@ -65,10 +62,15 @@ public:
     void generateDOTFile(const string &fileName);
     void renderGraph(const string &dotFileName, const string &outputFileName);
 
+    double calculateAverageDegree();
+    int calculateDiameter();
+
+
 private:
     unordered_map<string, UserProfile *> users;    // user profiles
     unordered_map<string, list<Connection *>> adj; // adjacency list
     void dfsUtil(const string &node, unordered_set<string> &visited, vector<string> &path);
+    vector<int> shortestPath(const string& src);
 };
 
 #endif
