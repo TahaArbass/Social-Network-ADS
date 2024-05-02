@@ -1,0 +1,33 @@
+graph G {
+  graph [splines=true, overlap=false, fontsize=10];
+  node [style=filled, fillcolor="#f0f0f0", shape=ellipse, fontcolor=black, fontsize=12];
+  edge [fontcolor="#666666", fontsize=8, color="#999999", penwidth=1.5];
+  user9;
+  user8;
+  user5;
+  user10;
+  user7;
+  user6;
+  user3;
+  user4;
+  user2;
+  user1;
+  user5 -- user7 [label="7"];
+  user5 -- user2 [label="10"];
+  user8 -- user4 [label="6"];
+  user2 -- user8 [label="7"];
+  user4 -- user8 [label="9"];
+  user4 -- user10 [label="4"];
+  user1 -- user5 [label="8"];
+  user1 -- user4 [label="1"];
+  user1 -- user7 [label="4"];
+  user1 -- user8 [label="2"];
+  user10 -- user6 [label="1"];
+  user10 -- user1 [label="7"];
+  user10 -- user9 [label="10"];
+  user7 -- user4 [label="10"];
+  user7 -- user2 [label="2"];
+  user7 -- user1 [label="6"];
+  user3 -- user1 [label="5"];
+  user3 -- user8 [label="6"];
+}
