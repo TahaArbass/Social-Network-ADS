@@ -46,6 +46,10 @@ void testGraphFunctions() {
         }
     }
 
+    // Generate DOT file
+    graph.generateDOTFile("graph.dot");
+    graph.renderGraph("graph.dot", "graph.png");
+
     // Test BFS traversal
     cout << "BFS Traversal: ";
     vector<string> bfsTraversal = graph.bfsTraversal("User3");
@@ -69,32 +73,28 @@ void testGraphFunctions() {
     cout << "Diameter: " << graph.calculateDiameter() << endl;
 
     // Test A* algorithm
-    cout << "A* Shortest Path from User1 to User6: ";
-    vector<UserProfile*> astarPath = graph.astar("User1", "User6");
+    cout << "A* Shortest Path from User1 to User8: ";
+    vector<UserProfile*> astarPath = graph.astar("User1", "User8");
     for (const auto& user : astarPath) {
         cout << user->getUserName() << " ";
     }
     cout << endl;
 
     // Test Bellman-Ford algorithm
-    cout << "Bellman-Ford Shortest Path from User1 to User6: ";
-    vector<string> bellmanFordPath = graph.shortestPathUsingBellmandFord("User1", "User6");
+    cout << "Bellman-Ford Shortest Path from User1 to User8: ";
+    vector<string> bellmanFordPath = graph.shortestPathUsingBellmandFord("User1", "User8");
     for (const auto& user : bellmanFordPath) {
         cout << user << " ";
     }
     cout << endl;
 
     // Test Dijkstra's algorithm
-    cout << "Dijkstra Shortest Path from User1 to User6: ";
-    vector<UserProfile*> dijkstraPath = graph.dijkstra("User1", "User6");
+    cout << "Dijkstra Shortest Path from User1 to User8: ";
+    vector<UserProfile*> dijkstraPath = graph.dijkstra("User1", "User8");
     for (const auto& user : dijkstraPath) {
         cout << user->getUserName() << " ";
     }
     cout << endl;
-
-    // Generate DOT file
-    graph.generateDOTFile("graph.dot");
-    graph.renderGraph("graph.dot", "graph.png");
 
     // Clean up
     for (int i = 0; i < 15; ++i) {
