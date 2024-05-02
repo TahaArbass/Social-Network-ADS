@@ -1,8 +1,10 @@
 #include "Connection.h"
 #include "Graph.h"
 #include "UserProfile.h"
+#include <fstream>
 #include <iostream>
 #include <random>
+#include <sstream>
 #include <type_traits>
 
 void displayMenu();
@@ -16,9 +18,17 @@ void bfsTraversal(Graph &graph);
 void dfsTraversal(Graph &graph);
 void shortestPathBetweenUsers(Graph &graph);
 void getAndDisplayConnectionsOfUser(Graph &graph);
-
+void readUsersFromFile(const string &fileName, Graph &graph);
+void readConnectionsFromFile(const string &folderName, const string &fileName,
+                             Graph &graph);
 int main() {
+  // Create a graph object
   Graph graph;
+  // Read users from a file and add them to the graph
+  readUsersFromFile("resources/users.txt", graph);
+
+  // Read connections from a file and add them to the graph
+  readConnectionsFromFile("resources", "connections.txt", graph);
 
   int choice;
   char choiceOfUser;
@@ -196,9 +206,18 @@ void addConnectionBetweenUsers(Graph &graph) {
 
   cout << "Enter the first user name: ";
   cin >> user1;
+  if (!graph.searchUser(user1)) {
+    cout << "User not found. Please enter a valid user name next time." << endl;
+    return;
+  }
   cout << "Enter the second user name: ";
   cin >> user2;
-  cout << "Enter the weight of the connection: ";
+  if (!graph.searchUser(user2)) {
+    cout << "User not found. Please enter a valid user name next time." << endl;
+    return;
+  }
+  cout << "Enter the weight of the connection (when a negative weight is "
+          "entered, it becomes 1): ";
   cin >> weight;
 
   // Create a Connection object
@@ -344,6 +363,11 @@ void shortestPathBetweenUsers(Graph &graph) {
       vector<UserProfile *> dijkstraPath = graph.dijkstra(user1, user2);
       cout << "Dijkstra Shortest Path from " << user1 << " to " << user2
            << ": ";
+      // If no path found
+      if (dijkstraPath.empty()) {
+        cout << "No path found." << endl;
+        break;
+      }
       for (const auto &user : dijkstraPath) {
         cout << user->getUserName() << " ";
       }
@@ -355,6 +379,11 @@ void shortestPathBetweenUsers(Graph &graph) {
           graph.shortestPathUsingBellmandFord(user1, user2);
       cout << "Bellman-Ford Shortest Path from " << user1 << " to " << user2
            << ": ";
+      // If no path found
+      if (bellmanFordPath.empty()) {
+        cout << "No path found." << endl;
+        break;
+      }
       for (const auto &user : bellmanFordPath) {
         cout << user << " ";
       }
@@ -364,6 +393,11 @@ void shortestPathBetweenUsers(Graph &graph) {
     case 3: {
       vector<UserProfile *> astarPath = graph.astar(user1, user2);
       cout << "A* Shortest Path from " << user1 << " to " << user2 << ": ";
+      // If no path found
+      if (astarPath.empty()) {
+        cout << "No path found." << endl;
+        break;
+      }
       for (const auto &user : astarPath) {
         cout << user->getUserName() << " ";
       }
@@ -389,4 +423,53 @@ void getAndDisplayConnectionsOfUser(Graph &graph) {
     cout << user << ", ";
   }
   cout << endl;
+}
+
+// Read users from a file and add them to the graph
+void readUsersFromFile(const string &fileName, Graph &graph) {
+  ifstream file(fileName);
+  if (!file.is_open()) {
+    cerr << "Unable to open file: " << fileName << endl;
+    return;
+  }
+
+  string line;
+  while (getline(file, line)) {
+    stringstream ss(line);
+    string userName, firstName, lastName, email;
+    ss >> userName >> firstName >> lastName >> email;
+
+    graph.addUser(new UserProfile(userName, firstName, lastName, email));
+  }
+
+  file.close();
+}
+
+// Read connections from a file and add them to the graph
+void readConnectionsFromFile(const string &folderName, const string &fileName,
+                             Graph &graph) {
+  string filePath = folderName + "/" + fileName;
+  ifstream file(filePath);
+  if (!file.is_open()) {
+    cerr << "Unable to open file: " << filePath << endl;
+    return;
+  }
+
+  string line;
+  while (getline(file, line)) {
+    stringstream ss(line);
+    string sourceUserName, destUserName;
+    int weight;
+    ss >> sourceUserName >> destUserName >> weight;
+
+    UserProfile *sourceUser = graph.searchUser(sourceUserName);
+    UserProfile *destUser = graph.searchUser(destUserName);
+
+    if (sourceUser && destUser) {
+      Connection *connection = new Connection(sourceUser, destUser, weight);
+      graph.addConnection(connection);
+    }
+  }
+
+  file.close();
 }

@@ -23,8 +23,7 @@
 
 using namespace std;
 
-class UserProfile
-{
+class UserProfile {
 public:
   /******** Function Members ********/
 
@@ -35,7 +34,8 @@ public:
     Construct a UserProfile object with the given attributes.
 
     Preconditions: None.
-    Postconditions: A UserProfile object is created with the specified attributes.
+    Postconditions: A UserProfile object is created with the specified
+  attributes.
   -------------------------------------------------------------------------*/
 
   /***** Getters *****/
@@ -112,8 +112,8 @@ public:
     Postconditions: Updates the email to the specified value.
   -------------------------------------------------------------------------*/
 
-  void setUser(const string &username, const string &firstName, const string &lastName,
-               const string &email);
+  void setUser(const string &username, const string &firstName,
+               const string &lastName, const string &email);
   /*-------------------------------------------------------------------------
     Set all user attributes.
 

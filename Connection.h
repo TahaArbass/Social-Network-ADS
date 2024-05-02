@@ -23,8 +23,7 @@ using namespace std;
 
 class UserProfile;
 
-class Connection
-{
+class Connection {
 private:
   UserProfile *source;      // Pointer to the source UserProfile
   UserProfile *destination; // Pointer to the destination UserProfile
@@ -36,11 +35,13 @@ public:
   /***** Constructors *****/
   Connection(UserProfile *source, UserProfile *destination, int weight);
   /*-------------------------------------------------------------------------
-    Construct a Connection object with the given source, destination, and weight.
+    Construct a Connection object with the given source, destination, and
+  weight.
 
-    Preconditions:  'source' and 'destination' are valid pointers to UserProfile objects,
-                     'weight' is an integer representing the weight of the connection.
-    Postconditions: A Connection object is created with the specified source, destination, and weight.
+    Preconditions:  'source' and 'destination' are valid pointers to UserProfile
+  objects, 'weight' is an integer representing the weight of the connection.
+    Postconditions: A Connection object is created with the specified source,
+  destination, and weight.
   -------------------------------------------------------------------------*/
 
   Connection(UserProfile *source, UserProfile *destination);
@@ -48,9 +49,9 @@ public:
     Construct a Connection object with the given source and destination.
     Default weight is set to 0.
 
-    Preconditions:  'source' and 'destination' are valid pointers to UserProfile objects.
-    Postconditions: A Connection object is created with the specified source and destination,
-                     and default weight of 0.
+    Preconditions:  'source' and 'destination' are valid pointers to UserProfile
+  objects. Postconditions: A Connection object is created with the specified
+  source and destination, and default weight of 0.
   -------------------------------------------------------------------------*/
 
   /***** Getters *****/
@@ -83,16 +84,18 @@ public:
   /*------------------------------------  -------------------------------------
     Set the source UserProfile of the connection.
 
-    Preconditions:  The 'source' parameter is a valid pointer to a UserProfile object.
-    Postconditions: The source UserProfile is updated to the specified value.
+    Preconditions:  The 'source' parameter is a valid pointer to a UserProfile
+  object. Postconditions: The source UserProfile is updated to the specified
+  value.
   -------------------------------------------------------------------------*/
 
   void setDestination(UserProfile *destination);
   /*-------------------------------------------------------------------------
     Set the destination UserProfile of the connection.
 
-    Preconditions:  The 'destination' parameter is a valid pointer to a UserProfile object.
-    Postconditions: The destination UserProfile is updated to the specified value.
+    Preconditions:  The 'destination' parameter is a valid pointer to a
+  UserProfile object. Postconditions: The destination UserProfile is updated to
+  the specified value.
   -------------------------------------------------------------------------*/
 
   void setWeight(int weight);
@@ -100,16 +103,18 @@ public:
     Set the weight of the connection.
 
     Preconditions:  The 'weight' parameter is an integer.
-    Postconditions: The weight of the connection is updated to the specified value.
+    Postconditions: The weight of the connection is updated to the specified
+  value.
   -------------------------------------------------------------------------*/
 
   void setConnection(UserProfile *source, UserProfile *destination, int weight);
   /*-------------------------------------------------------------------------
     Set the source, destination, and weight of the connection.
 
-    Preconditions:  'source' and 'destination' are valid pointers to UserProfile objects,
-                     'weight' is an integer representing the weight of the connection.
-    Postconditions: The source, destination, and weight of the connection are updated.
+    Preconditions:  'source' and 'destination' are valid pointers to UserProfile
+  objects, 'weight' is an integer representing the weight of the connection.
+    Postconditions: The source, destination, and weight of the connection are
+  updated.
   -------------------------------------------------------------------------*/
 
   /***** Display Connection Info *****/

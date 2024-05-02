@@ -1,39 +1,35 @@
 #include "Graph.h"
 #include "Connection.h"
 #include "UserProfile.h"
-#include <unordered_set>
-#include <unordered_map>
-#include <limits>
 #include <algorithm>
 #include <fstream>
+#include <limits>
+#include <unordered_map>
+#include <unordered_set>
+
 // Default constructor
 Graph::Graph() {}
 
 // Destructor to clean up dynamically allocated memory
-Graph::~Graph()
-{
+Graph::~Graph() {
   // Clear the adjacency list
   clearGraph();
 
   // Delete user profiles
-  for (auto &user : users)
-  {
+  for (auto &user : users) {
     delete user.second;
   }
   users.clear();
 }
 
 // Function to add a user to the graph
-bool Graph::addUser(UserProfile *user)
-{
-  if (user == nullptr)
-  {
+bool Graph::addUser(UserProfile *user) {
+  if (user == nullptr) {
     return false;
   }
 
   string username = user->getUserName();
-  if (users.find(username) == users.end())
-  {
+  if (users.find(username) == users.end()) {
     users[username] = user;
     return true;
   }
@@ -41,19 +37,17 @@ bool Graph::addUser(UserProfile *user)
 }
 
 // Function to add an edge/connection between user1 and user2
-bool Graph::addConnection(Connection *connection)
-{
+bool Graph::addConnection(Connection *connection) {
   // Check if the connection is valid
-  if (connection != nullptr)
-  {
+  if (connection != nullptr) {
     string user1 = connection->getSource()->getUserName();
     string user2 = connection->getDestination()->getUserName();
     // Check if the users are already connected
-    if (!isConnected(user1, user2))
-    {
+    if (!isConnected(user1, user2)) {
       // Add the connection to the adjacency list (undirected graph)
       adj[user1].push_back(connection);
-      adj[user2].push_back(connection);
+      adj[user2].push_back(
+          new Connection(users[user2], users[user1], connection->getWeight()));
       return true;
     }
   }
@@ -61,12 +55,9 @@ bool Graph::addConnection(Connection *connection)
   return false;
 }
 // Function to delete all connections of a user
-void Graph::deleteConnectionsOfUser(const string &username)
-{
-  if (adj.find(username) != adj.end())
-  {
-    for (auto connection : adj[username])
-    {
+void Graph::deleteConnectionsOfUser(const string &username) {
+  if (adj.find(username) != adj.end()) {
+    for (auto connection : adj[username]) {
       string dest = connection->getDestination()->getUserName();
       adj[dest].remove(connection);
       delete connection;
@@ -76,10 +67,8 @@ void Graph::deleteConnectionsOfUser(const string &username)
 }
 
 // Function to remove a user from the graph
-bool Graph::removeUser(const string &username)
-{
-  if (users.find(username) != users.end())
-  {
+bool Graph::removeUser(const string &username) {
+  if (users.find(username) != users.end()) {
     // Delete all connections of the user
     deleteConnectionsOfUser(username);
     // Delete the user profile
@@ -91,17 +80,13 @@ bool Graph::removeUser(const string &username)
 }
 
 // Function to remove an edge/connection between user1 and user2
-bool Graph::removeConnection(const string &src, const string &dest)
-{
+bool Graph::removeConnection(const string &src, const string &dest) {
   // Check if the source user exists in the graph
-  if (adj.find(src) != adj.end())
-  {
+  if (adj.find(src) != adj.end()) {
     // Iterate through the connections of the source user
-    for (auto connection : adj[src])
-    {
+    for (auto connection : adj[src]) {
       // Check if the destination user is connected to the source user
-      if (connection->getDestination()->getUserName() == dest)
-      {
+      if (connection->getDestination()->getUserName() == dest) {
         // Remove the connection from the adjacency list
         adj[src].remove(connection);
         adj[dest].remove(connection);
@@ -113,40 +98,32 @@ bool Graph::removeConnection(const string &src, const string &dest)
   return false;
 }
 
-bool Graph::isUserNameTaken(const string &userName)
-{
-  if (users.find(userName) != users.end())
-  {
+bool Graph::isUserNameTaken(const string &userName) {
+  if (users.find(userName) != users.end()) {
     return true;
   }
   return false;
 }
 
 // Function to search for a user in the graph
-UserProfile *Graph::searchUser(const string &username)
-{
-  if (users.find(username) != users.end())
-  {
+UserProfile *Graph::searchUser(const string &username) {
+  if (users.find(username) != users.end()) {
     return users[username];
   }
   return nullptr;
 }
 
 // Function to print the adjacency list representation of the graph
-void Graph::printGraph()
-{
-  if (adj.empty())
-  {
+void Graph::printGraph() {
+  if (adj.empty()) {
     cout << "Graph is empty" << endl;
     return;
   }
 
-  for (const auto &entry : adj)
-  {
+  for (const auto &entry : adj) {
     cout << "Connections of user " << entry.first << "\n";
     cout << "Connected with: ";
-    for (auto connection : entry.second)
-    {
+    for (auto connection : entry.second) {
       cout << connection->getDestination()->getUserName() << ", ";
     }
     cout << endl;
@@ -154,17 +131,13 @@ void Graph::printGraph()
 }
 
 // Function to check if a user is connected to another user
-bool Graph::isConnected(const string &src, const string &dest)
-{
+bool Graph::isConnected(const string &src, const string &dest) {
   // Check if the source user exists in the graph
-  if (adj.find(src) != adj.end())
-  {
+  if (adj.find(src) != adj.end()) {
     // Iterate through the connections of the source user
-    for (auto connection : adj[src])
-    {
+    for (auto connection : adj[src]) {
       // Check if the destination user is connected to the source user
-      if (connection->getDestination()->getUserName() == dest)
-      {
+      if (connection->getDestination()->getUserName() == dest) {
         return true;
       }
     }
@@ -173,39 +146,32 @@ bool Graph::isConnected(const string &src, const string &dest)
 }
 
 // Function to empty the graph
-void Graph::clearGraph()
-{
+void Graph::clearGraph() {
   // Clear the adjacency list
-  for (auto &pair : adj)
-  {
+  for (auto &pair : adj) {
     pair.second.clear();
   }
   adj.clear();
 }
 // Function to get the number of users in the graph
-int Graph::getNumOfUsers()
-{
-  return users.size();
-}
+int Graph::getNumOfUsers() { return users.size(); }
 
 // Function to get the number of connections in the graph
-int Graph::getNumOfConnections()
-{
+int Graph::getNumOfConnections() {
   int count = 0;
-  for (const auto &entry : adj)
-  {
+  for (const auto &entry : adj) {
     count += entry.second.size();
   }
   // Since each connection is counted twice in an undirected graph
   // we divide the total count by 2 to get the actual number of connections
   return count / 2;
 }
-vector<string> Graph::bfsTraversal(const string &startUserName)
-{
+
+// Function to perform Breadth First Search traversal
+vector<string> Graph::bfsTraversal(const string &startUserName) {
   vector<string> traversalResult;
 
-  if (users.find(startUserName) == users.end())
-  {
+  if (users.find(startUserName) == users.end()) {
     cout << "User name : " << startUserName << " is not found." << endl;
     return traversalResult;
   }
@@ -215,20 +181,16 @@ vector<string> Graph::bfsTraversal(const string &startUserName)
 
   visited.insert(startUserName);
   userQueue.push(startUserName);
-  while (!userQueue.empty())
-  {
+  while (!userQueue.empty()) {
     string currentUser = userQueue.front();
     userQueue.pop();
 
     traversalResult.push_back(currentUser);
 
-    if (adj.find(currentUser) != adj.end())
-    {
-      for (auto connection : adj[currentUser])
-      {
+    if (adj.find(currentUser) != adj.end()) {
+      for (auto connection : adj[currentUser]) {
         string neighborUserName = connection->getDestination()->getUserName();
-        if (visited.find(neighborUserName) == visited.end())
-        {
+        if (visited.find(neighborUserName) == visited.end()) {
           visited.insert(neighborUserName);
           userQueue.push(neighborUserName);
         }
@@ -239,18 +201,20 @@ vector<string> Graph::bfsTraversal(const string &startUserName)
   return traversalResult;
 }
 
-vector<UserProfile *> Graph::astar(const string &startUserName, const string &goalUserName)
-{
+// A star algorithm to find the shortest path between two users
+vector<UserProfile *> Graph::astar(const string &startUserName,
+                                   const string &goalUserName) {
   // Heuristic function: estimate of the distance from a node to the goal
-  auto heuristic = [](UserProfile *current, UserProfile *goal)
-  {
+  auto heuristic = [](UserProfile *current, UserProfile *goal) {
     // Example heuristic: Manhattan distance between user IDs
     int dx = abs(current->getUserId() - goal->getUserId());
     return dx;
   };
 
   // Priority queue for open set
-  priority_queue<pair<int, UserProfile *>, vector<pair<int, UserProfile *>>, greater<pair<int, UserProfile *>>> openSet;
+  priority_queue<pair<int, UserProfile *>, vector<pair<int, UserProfile *>>,
+                 greater<pair<int, UserProfile *>>>
+      openSet;
 
   // Closed set to store visited nodes
   unordered_set<UserProfile *> closedSet;
@@ -265,20 +229,18 @@ vector<UserProfile *> Graph::astar(const string &startUserName, const string &go
   gScore[users[startUserName]] = 0;
 
   // Add start node to open set with estimated total cost (f-score)
-  openSet.emplace(heuristic(users[startUserName], users[goalUserName]), users[startUserName]);
+  openSet.emplace(heuristic(users[startUserName], users[goalUserName]),
+                  users[startUserName]);
 
-  while (!openSet.empty())
-  {
+  while (!openSet.empty()) {
     // Get the node with the lowest f-score from the open set
     auto current = openSet.top().second;
     openSet.pop();
 
     // If the current node is the goal, reconstruct and return the path
-    if (current->getUserName() == goalUserName)
-    {
+    if (current->getUserName() == goalUserName) {
       vector<UserProfile *> path;
-      while (current)
-      {
+      while (current) {
         path.push_back(current);
         current = cameFrom[current];
       }
@@ -290,8 +252,7 @@ vector<UserProfile *> Graph::astar(const string &startUserName, const string &go
     closedSet.insert(current);
 
     // Iterate through the neighbors of the current node
-    for (auto connection : adj[current->getUserName()])
-    {
+    for (auto connection : adj[current->getUserName()]) {
       auto neighbor = connection->getDestination();
 
       // If neighbor is in the closed set, skip it
@@ -302,8 +263,8 @@ vector<UserProfile *> Graph::astar(const string &startUserName, const string &go
       int tentativeGScore = gScore[current] + connection->getWeight();
 
       // If neighbor is not in the open set or new g-score is lower
-      if (gScore.find(neighbor) == gScore.end() || tentativeGScore < gScore[neighbor])
-      {
+      if (gScore.find(neighbor) == gScore.end() ||
+          tentativeGScore < gScore[neighbor]) {
         // Update cameFrom and g-score for the neighbor
         cameFrom[neighbor] = current;
         gScore[neighbor] = tentativeGScore;
@@ -319,17 +280,19 @@ vector<UserProfile *> Graph::astar(const string &startUserName, const string &go
   return {};
 }
 
-vector<UserProfile *> Graph::dijkstra(const string &startUserName, const string &endUserName)
-{
+// Djikstra's algorithm to find the shortest path between two users
+vector<UserProfile *> Graph::dijkstra(const string &startUserName,
+                                      const string &endUserName) {
   // Priority queue to store vertices according to their distances
-  priority_queue<pair<int, string>, vector<pair<int, string>>, greater<pair<int, string>>> pq;
+  priority_queue<pair<int, string>, vector<pair<int, string>>,
+                 greater<pair<int, string>>>
+      pq;
 
   // Map to store distances from the source vertex
   unordered_map<string, int> distance;
 
   // Initialize distances to infinity
-  for (const auto &entry : users)
-  {
+  for (const auto &entry : users) {
     distance[entry.first] = numeric_limits<int>::max();
   }
 
@@ -343,19 +306,16 @@ vector<UserProfile *> Graph::dijkstra(const string &startUserName, const string 
   unordered_map<string, string> parent;
 
   // Perform Dijkstra's algorithm
-  while (!pq.empty())
-  {
+  while (!pq.empty()) {
     string u = pq.top().second;
     pq.pop();
 
-    for (const auto &connection : adj[u])
-    {
+    for (const auto &connection : adj[u]) {
       string v = connection->getDestination()->getUserName();
       int weight = connection->getWeight();
 
       // Relaxation step
-      if (distance[u] + weight < distance[v])
-      {
+      if (distance[u] + weight < distance[v]) {
         distance[v] = distance[u] + weight;
         pq.push({distance[v], v});
         parent[v] = u;
@@ -363,46 +323,43 @@ vector<UserProfile *> Graph::dijkstra(const string &startUserName, const string 
     }
   }
 
-  // Reconstruct the shortest path
+  // Reconstruct the shortest path if it exists
   vector<UserProfile *> shortestPath;
+  if (distance[endUserName] != numeric_limits<int>::max()) {
+    string currentVertex = endUserName;
+    while (currentVertex != startUserName) {
+      shortestPath.push_back(users[currentVertex]);
+      currentVertex = parent[currentVertex];
+    }
 
-  string currentVertex = endUserName;
-  while (currentVertex != startUserName)
-  {
-    shortestPath.push_back(users[currentVertex]);
-    currentVertex = parent[currentVertex];
+    shortestPath.push_back(users[startUserName]);
+
+    reverse(shortestPath.begin(), shortestPath.end());
   }
-
-  shortestPath.push_back(users[startUserName]);
-
-  reverse(shortestPath.begin(), shortestPath.end());
 
   return shortestPath;
 }
 
-unordered_map<string, pair<int, string>> Graph::bellmanFordShortestPath(const string &startNode)
-{
+unordered_map<string, pair<int, string>>
+Graph::bellmanFordShortestPath(const string &startNode) {
   // Initialize distance map with infinite distance for all nodes
   unordered_map<string, pair<int, string>> distance;
-  for (auto &entry : users)
-  {
+  for (auto &entry : users) {
     distance[entry.first] = {numeric_limits<int>::max(), ""};
   }
   distance[startNode] = {0, startNode};
 
   // Relax all edges repeatedly
-  for (int i = 0; i < users.size() - 1; ++i)
-  {
-    for (const auto &entry : adj)
-    {
+  for (int i = 0; i < users.size() - 1; ++i) {
+    for (const auto &entry : adj) {
       string u = entry.first;
-      for (auto connection : entry.second)
-      {
-        string v = (connection->getSource()->getUserName() == u) ? connection->getDestination()->getUserName() : connection->getSource()->getUserName();
+      for (auto connection : entry.second) {
+        string v = (connection->getSource()->getUserName() == u)
+                       ? connection->getDestination()->getUserName()
+                       : connection->getSource()->getUserName();
         int weight = connection->getWeight();
         if (distance[u].first != numeric_limits<int>::max() &&
-            distance[u].first + weight < distance[v].first)
-        {
+            distance[u].first + weight < distance[v].first) {
           distance[v] = {distance[u].first + weight, u};
         }
       }
@@ -410,16 +367,15 @@ unordered_map<string, pair<int, string>> Graph::bellmanFordShortestPath(const st
   }
 
   // Check for negative weight cycles
-  for (const auto &entry : adj)
-  {
+  for (const auto &entry : adj) {
     string u = entry.first;
-    for (auto connection : entry.second)
-    {
-      string v = (connection->getSource()->getUserName() == u) ? connection->getDestination()->getUserName() : connection->getSource()->getUserName();
+    for (auto connection : entry.second) {
+      string v = (connection->getSource()->getUserName() == u)
+                     ? connection->getDestination()->getUserName()
+                     : connection->getSource()->getUserName();
       int weight = connection->getWeight();
       if (distance[u].first != numeric_limits<int>::max() &&
-          distance[u].first + weight < distance[v].first)
-      {
+          distance[u].first + weight < distance[v].first) {
         cout << "Graph contains negative weight cycle" << endl;
         return {};
       }
@@ -429,21 +385,21 @@ unordered_map<string, pair<int, string>> Graph::bellmanFordShortestPath(const st
   return distance;
 }
 
-vector<string> Graph::shortestPathUsingBellmandFord(const string &startNode, const string &endNode)
-{
+vector<string> Graph::shortestPathUsingBellmandFord(const string &startNode,
+                                                    const string &endNode) {
   // Use Bellman-Ford to find shortest paths
-  unordered_map<string, pair<int, string>> shortestPaths = bellmanFordShortestPath(startNode);
+  unordered_map<string, pair<int, string>> shortestPaths =
+      bellmanFordShortestPath(startNode);
 
   // Reconstruct the shortest path
   vector<string> path;
   string current = endNode;
-  while (current != startNode)
-  {
+  while (current != startNode) {
     path.push_back(current);
     current = shortestPaths[current].second;
-    if (current.empty())
-    {
-      cout << "No path exists between " << startNode << " and " << endNode << endl;
+    if (current.empty()) {
+      cout << "No path exists between " << startNode << " and " << endNode
+           << endl;
       return {};
     }
   }
@@ -453,16 +409,12 @@ vector<string> Graph::shortestPathUsingBellmandFord(const string &startNode, con
   return path;
 }
 
-vector<string> Graph::getConnectedUsers(const string &userName)
-{
+vector<string> Graph::getConnectedUsers(const string &userName) {
   vector<string> connectedUsers;
 
-  if (users.find(userName) != users.end())
-  {
-    if (adj.find(userName) != adj.end())
-    {
-      for (auto connection : adj[userName])
-      {
+  if (users.find(userName) != users.end()) {
+    if (adj.find(userName) != adj.end()) {
+      for (auto connection : adj[userName]) {
         string connectedUserName = connection->getDestination()->getUserName();
         connectedUsers.push_back(connectedUserName);
       }
@@ -472,41 +424,42 @@ vector<string> Graph::getConnectedUsers(const string &userName)
   return connectedUsers;
 }
 
-void Graph::generateDOTFile(const string &fileName)
-{
-    ofstream dotFile(fileName);
-    if (!dotFile.is_open())
-    {
-        cerr << "Error: Unable to open DOT file for writing\n";
-        return;
-    }
+void Graph::generateDOTFile(const string &fileName) {
+  ofstream dotFile(fileName);
+  if (!dotFile.is_open()) {
+    cerr << "Error: Unable to open DOT file for writing\n";
+    return;
+  }
 
-    // Write DOT file header
-    dotFile << "graph G {\n";
-    dotFile << "  graph [splines=true, overlap=false, fontsize=10];\n";
-    dotFile << "  node [style=filled, fillcolor=\"#f0f0f0\", shape=ellipse, fontcolor=black, fontsize=12];\n";
-    dotFile << "  edge [fontcolor=\"#666666\", fontsize=8, color=\"#999999\", penwidth=1.5];\n";
+  // Write DOT file header
+  dotFile << "graph G {\n";
+  dotFile << "  graph [splines=true, overlap=false];\n";
+  dotFile << "  node [style=filled, fillcolor=\"#f0f0f0\", shape=ellipse, "
+             "fontcolor=black, fontsize=16];\n";
+  dotFile << "  edge [fontcolor=\"black\", fontsize=12, color=\"#3366ff\", "
+             "penwidth=3];\n";
 
   // Write node properties
-  for (const auto &entry : users)
-  {
+  for (const auto &entry : users) {
     string userName = entry.first;
     dotFile << "  " << userName << ";\n";
   }
 
-    // Write edge properties
-    for (const auto &entry : adj)
-    {
-        const string &source = entry.first;
-        for (const auto &connection : entry.second)
-        {
-            const string &destination = connection->getDestination()->getUserName();
-            if (source != destination) // Avoid creating edges from a node to itself
-            {
-                dotFile << "  " << source << " -- " << destination << " [label=\"" << connection->getWeight() << "\"];\n";
-            }
+  // Write edge properties
+  unordered_set<string> processedEdges;
+  for (const auto &entry : adj) {
+    const string &source = entry.first;
+    for (const auto &connection : entry.second) {
+      const string &destination = connection->getDestination()->getUserName();
+      if (source < destination) {
+        string edge = source + " -- " + destination;
+        if (processedEdges.find(edge) == processedEdges.end()) {
+          processedEdges.insert(edge);
+          dotFile << "  " << edge << " [label=\"" << connection->getWeight() << "\"];\n";
         }
+      }
     }
+  }
 
   // Write DOT file footer
   dotFile << "}\n";
@@ -515,24 +468,27 @@ void Graph::generateDOTFile(const string &fileName)
 }
 
 
-void Graph::renderGraph(const string &dotFileName, const string &outputFileName)
-{
-    // Invoke Graphviz to render the DOT file
-    string command = "dot -Tpng " + dotFileName + " -o " + outputFileName;
-    int result = system(command.c_str());
-    if (result != 0)
-    {
-        cerr << "Error: Failed to render graph using Graphviz\n";
-        return;
-    }
 
-    cout << "Graph visualization saved as " << outputFileName << endl;
+ 
+
+
+
+// Function to render the graph visualization using Graphviz
+void Graph::renderGraph(const string &dotFileName,
+                        const string &outputFileName) {
+  // Invoke Graphviz to render the DOT file
+  string command = "dot -Tpng " + dotFileName + " -o " + outputFileName;
+  int result = system(command.c_str());
+  if (result != 0) {
+    cerr << "Error: Failed to render graph using Graphviz\n";
+    return;
+  }
+
+  cout << "Graph visualization saved as " << outputFileName << endl;
 }
 
-
 // Function to perform Depth First Search traversal
-vector<string> Graph::dfsTraversal(const string &startUserName)
-{
+vector<string> Graph::dfsTraversal(const string &startUserName) {
   // Vector to store the path of visited nodes
   vector<string> path;
 
@@ -546,18 +502,18 @@ vector<string> Graph::dfsTraversal(const string &startUserName)
 }
 
 // Utility function for DFS traversal
-void Graph::dfsUtil(const string &node, unordered_set<string> &visited, vector<string> &path)
-{
+void Graph::dfsUtil(const string &node, unordered_set<string> &visited,
+                    vector<string> &path) {
   // Mark the current node as visited
   visited.insert(node);
   path.push_back(node);
 
   // Traverse all adjacent nodes of the current node
-  for (auto connection : adj[node])
-  {
-    string neighbor = (connection->getSource()->getUserName() == node) ? connection->getDestination()->getUserName() : connection->getSource()->getUserName();
-    if (visited.find(neighbor) == visited.end())
-    {
+  for (auto connection : adj[node]) {
+    string neighbor = (connection->getSource()->getUserName() == node)
+                          ? connection->getDestination()->getUserName()
+                          : connection->getSource()->getUserName();
+    if (visited.find(neighbor) == visited.end()) {
       dfsUtil(neighbor, visited, path);
     }
   }
@@ -565,81 +521,80 @@ void Graph::dfsUtil(const string &node, unordered_set<string> &visited, vector<s
 
 // Function to calculate the average degree of the graph
 double Graph::calculateAverageDegree() {
-    if (adj.empty() || users.empty()){
-        return 0.0;
-    }
+  if (adj.empty() || users.empty()) {
+    return 0.0;
+  }
 
-    double totalDegree = 0.0;
-    for (const auto& entry : adj) {
-        totalDegree += entry.second.size();
-    }
+  double totalDegree = 0.0;
+  for (const auto &entry : adj) {
+    totalDegree += entry.second.size();
+  }
 
-    return totalDegree / users.size();
+  return totalDegree / users.size();
 }
-
 
 // Function to calculate the diameter of the graph
 int Graph::calculateDiameter() {
-    if (users.empty()) {
-        return -1;
+  if (users.empty()) {
+    return -1;
+  }
+
+  int diameter = 0;
+  const int INF = std::numeric_limits<int>::max(); // Declare INF constant
+
+  // Iterate through each vertex and find the maximum shortest path
+  for (const auto &entry : users) {
+    const string &src = entry.first;
+    vector<int> dist = shortestPath(src);
+
+    // Find the maximum distance in the shortest paths
+    for (int d : dist) {
+      if (d != INF && d > diameter) {
+        diameter = d;
+      }
     }
+  }
 
-    int diameter = 0;
-    const int INF = std::numeric_limits<int>::max(); // Declare INF constant
-
-    // Iterate through each vertex and find the maximum shortest path
-    for (const auto& entry : users) {
-        const string& src = entry.first;
-        vector<int> dist = shortestPath(src);
-
-        // Find the maximum distance in the shortest paths
-        for (int d : dist) {
-            if (d != INF && d > diameter) {
-                diameter = d;
-            }
-        }
-    }
-
-    return diameter;
+  return diameter;
 }
 
 // Function to calculate shortest paths from a source node
-vector<int> Graph::shortestPath(const string& src) {
-    const int INF = std::numeric_limits<int>::max(); // Declare INF constant
-    unordered_map<string, int> distance; // Map to store distances from the source node
-    queue<string> q; // Queue for BFS traversal
+vector<int> Graph::shortestPath(const string &src) {
+  const int INF = std::numeric_limits<int>::max(); // Declare INF constant
+  unordered_map<string, int>
+      distance;    // Map to store distances from the source node
+  queue<string> q; // Queue for BFS traversal
 
-    // Initialize distances
-    for (const auto& entry : users) {
-        distance[entry.first] = INF;
+  // Initialize distances
+  for (const auto &entry : users) {
+    distance[entry.first] = INF;
+  }
+
+  // Enqueue the source node
+  q.push(src);
+  distance[src] = 0;
+
+  // Perform BFS
+  while (!q.empty()) {
+    string u = q.front();
+    q.pop();
+    // Iterate through all adjacent nodes of u
+    for (auto connection : adj[u]) {
+      string v = (connection->getSource()->getUserName() == u)
+                     ? connection->getDestination()->getUserName()
+                     : connection->getSource()->getUserName();
+      // If v is not visited yet
+      if (distance[v] == INF) {
+        distance[v] = distance[u] + 1;
+        q.push(v);
+      }
     }
+  }
 
-    // Enqueue the source node
-    q.push(src);
-    distance[src] = 0;
-
-    // Perform BFS
-    while (!q.empty()) {
-        string u = q.front();
-        q.pop();
-        // Iterate through all adjacent nodes of u
-        for (auto connection : adj[u]) {
-            string v = (connection->getSource()->getUserName() == u) ?
-                            connection->getDestination()->getUserName() :
-                            connection->getSource()->getUserName();
-            // If v is not visited yet
-            if (distance[v] == INF) {
-                distance[v] = distance[u] + 1;
-                q.push(v);
-            }
-        }
-    }
-
-    // Convert distances to vector
-    vector<int> dist;
-    for (const auto& entry : users) {
-        dist.push_back(distance[entry.first]);
-    }
-    return dist;
+  // Convert distances to vector
+  vector<int> dist;
+  for (const auto &entry : users) {
+    dist.push_back(distance[entry.first]);
+  }
+  return dist;
 }
-

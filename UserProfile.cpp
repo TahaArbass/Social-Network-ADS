@@ -42,9 +42,7 @@ string UserProfile::getEmail() const { return email; }
 
 // Display user information
 string UserProfile::displayUserInfo() const {
-  return "User ID: " + to_string(userId) + "\n"
-  + "Username: " + userName + "\n"
-  + "First Name: " + firstName + "\n"
-  + "Last Name: " +  lastName + "\n"
-  + "Email: " + email + "\n";
+  return "User ID: " + to_string(userId) + "\n" + "Username: " + userName +
+         "\n" + "First Name: " + firstName + "\n" + "Last Name: " + lastName +
+         "\n" + "Email: " + email + "\n";
 }
