@@ -23,7 +23,8 @@ using namespace std;
 
 class UserProfile;
 
-class Connection {
+class Connection
+{
 private:
   UserProfile *source;      // Pointer to the source UserProfile
   UserProfile *destination; // Pointer to the destination UserProfile
@@ -38,7 +39,7 @@ public:
     Construct a Connection object with the given source, destination, and
   weight.
 
-    Preconditions:  'source' and 'destination' are valid pointers to UserProfile
+  Preconditions:  'source' and 'destination' are valid pointers to UserProfile
   objects, 'weight' is an integer representing the weight of the connection.
     Postconditions: A Connection object is created with the specified source,
   destination, and weight.
@@ -49,7 +50,7 @@ public:
     Construct a Connection object with the given source and destination.
     Default weight is set to 0.
 
-    Preconditions:  'source' and 'destination' are valid pointers to UserProfile
+  Preconditions:  'source' and 'destination' are valid pointers to UserProfile
   objects. Postconditions: A Connection object is created with the specified
   source and destination, and default weight of 0.
   -------------------------------------------------------------------------*/
@@ -107,11 +108,12 @@ public:
   value.
   -------------------------------------------------------------------------*/
 
-  void setConnection(UserProfile *source, UserProfile *destination, int weight);
+  void setConnection(UserProfile *source, UserProfile *destination
+  , int weight);
   /*-------------------------------------------------------------------------
     Set the source, destination, and weight of the connection.
 
-    Preconditions:  'source' and 'destination' are valid pointers to UserProfile
+  Preconditions:  'source' and 'destination' are valid pointers to UserProfile
   objects, 'weight' is an integer representing the weight of the connection.
     Postconditions: The source, destination, and weight of the connection are
   updated.
@@ -124,7 +126,7 @@ public:
 
     Preconditions:  None.
     Postconditions: Information about the connection is returned as a string.
-  ----------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
 };
 
 #endif // END OF THE HEADER FILE
