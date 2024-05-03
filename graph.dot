@@ -19,7 +19,6 @@ graph G {
   Karen;
   Michael;
   Daniel;
-  Linda;
   Maria;
   Robert;
   Laura -- Nancy [label="12"];
@@ -78,8 +77,4 @@ graph G {
   Maria -- Sarah [label="5"];
   Maria -- Michael [label="6"];
   Robert -- William [label="8"];
-  Linda -- Robert [label="6"];
-  Linda -- Richard [label="10"];
-  Linda -- William [label="3"];
-  Linda -- Nancy [label="4"];
 }

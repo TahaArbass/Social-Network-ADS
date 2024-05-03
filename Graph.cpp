@@ -344,7 +344,8 @@ vector<UserProfile *> Graph::astar(const string &startUserName,
         gScore[neighbor] = tentativeGScore;
 
         // Add neighbor to the open set with estimated total cost (f-score)
-        int fscore = tentativeGScore + heuristic(neighbor, users[goalUserName]);
+        int fscore = tentativeGScore + heuristic(neighbor,
+                                                 users[goalUserName]);
         openSet.emplace(fscore, neighbor);
       }
     }

@@ -1,25 +1,37 @@
 /******************************************************************************
  * Fares Najjar & Taha arbas
  * ADS project (Spring 2024)
- * Instructor : Dr.charbel Obied
+ * Instructor : Dr.Charbel Obied
     Implementation of main.cpp:
     displayMenu: Function to display the menu options.
     addUserToGraph: Function to add a user to the graph.
     deleteUserFromGraph: Function to delete a user from the graph.
-    addConnectionBetweenUsers: Function to add a connection between two users in the graph.
-    deleteConnectionBetweenUsers: Function to delete a connection between two users in the graph.
-    deleteAllConnectionsOfUser: Function to delete all connections of a user in the graph.
-    isUserConnectedToAnother: Function to check if a user is connected directly to another user.
-    bfsTraversal: Function to perform Breadth First Search (BFS) traversal on the graph.
-    dfsTraversal: Function to perform Depth First Search (DFS) traversal on the graph.
-    shortestPathBetweenUsers: Function to find the shortest path between two users in the graph.
-    getAndDisplayConnectionsOfUser: Function to get and display all connections of a user in the graph.
-    clearGraphWithConfirmation: Function to clear the graph with user confirmation.
-    clearUsersWithConfirmation: Function to clear all users from the graph with user confirmation.
-    readUsersFromFile: Function to read users from a file and add them to the graph.
-    readConnectionsFromFile: Function to read connections from a file and add them to the graph.
+    addConnectionBetweenUsers:
+     Function to add a connection between two users in the graph.
+    deleteConnectionBetweenUsers:
+     Function to delete a connection between two users in the graph.
+    deleteAllConnectionsOfUser:
+     Function to delete all connections of a user in the graph.
+    isUserConnectedToAnother:
+     Function to check if a user is connected directly to another user.
+    bfsTraversal:
+     Function to perform Breadth First Search (BFS) traversal on the graph.
+    dfsTraversal:
+     Function to perform Depth First Search (DFS) traversal on the graph.
+    shortestPathBetweenUsers:
+     Function to find the shortest path between two users in the graph.
+    getAndDisplayConnectionsOfUser:
+     Function to get and display all connections of a user in the graph.
+    clearGraphWithConfirmation:
+     Function to clear the graph with user confirmation.
+    clearUsersWithConfirmation:
+     Function to clear all users from the graph with user confirmation.
+    readUsersFromFile:
+     Function to read users from a file and add them to the graph.
+    readConnectionsFromFile:
+     Function to read connections from a file and add them to the graph.
     main: The main function that drives the execution of the program.
-    ******************************************************************************/
+    **************************************************************************/
 
 #include "Connection.h"
 #include "Graph.h"
@@ -73,7 +85,8 @@ void deleteUserFromGraph(Graph &graph);
  * Preconditions:
  *    - 'graph' is a valid Graph object.
  *
- * Postconditions: A connection is added between the specified users in the graph.
+ * Postconditions:
+ *          A connection is added between the specified users in the graph.
  *****************************************************************************/
 void addConnectionBetweenUsers(Graph &graph);
 
@@ -85,7 +98,8 @@ void addConnectionBetweenUsers(Graph &graph);
  * Preconditions:
  *    - 'graph' is a valid Graph object.
  *
- * Postconditions: If a connection exists between the specified users, it is deleted from the graph.
+ * Postconditions: If a connection exists between
+ *                         the specified users, it is deleted from the graph.
  *****************************************************************************/
 void deleteConnectionBetweenUsers(Graph &graph);
 
@@ -97,7 +111,8 @@ void deleteConnectionBetweenUsers(Graph &graph);
  * Preconditions:
  *    - 'graph' is a valid Graph object.
  *
- * Postconditions: All connections associated with the specified user are removed from the graph.
+ * Postconditions: All connections associated with
+ *                           the specified user are removed from the graph.
  *****************************************************************************/
 void deleteAllConnectionsOfUser(Graph &graph);
 
@@ -116,7 +131,8 @@ void isUserConnectedToAnother(Graph &graph);
 /******************************************************************************
  * Function: bfsTraversal
  *
- * Purpose: Perform Breadth First Search (BFS) traversal on the graph starting from a specified user.
+ * Purpose: Perform Breadth First Search
+ *                 (BFS) traversal on the graph starting from a specified user.
  *
  * Preconditions:
  *    - 'graph' is a valid Graph object.
@@ -128,7 +144,8 @@ void bfsTraversal(Graph &graph);
 /******************************************************************************
  * Function: dfsTraversal
  *
- * Purpose: Perform Depth First Search (DFS) traversal on the graph starting from a specified user.
+ * Purpose: Perform Depth First Search (DFS) traversal on
+ *                                 the graph starting from a specified user.
  *
  * Preconditions:
  *    - 'graph' is a valid Graph object.
@@ -140,7 +157,8 @@ void dfsTraversal(Graph &graph);
 /******************************************************************************
  * Function: shortestPathBetweenUsers
  *
- * Purpose: Find the shortest path between two users in the graph using a specified algorithm.
+ * Purpose: Find the shortest path between
+ *                         two users in the graph using a specified algorithm.
  *
  * Preconditions:
  *    - 'graph' is a valid Graph object.
@@ -152,7 +170,8 @@ void shortestPathBetweenUsers(Graph &graph);
 /******************************************************************************
  * Function: getAndDisplayConnectionsOfUser
  *
- * Purpose: Retrieve and display all connections of a specified user in the graph.
+ * Purpose: Retrieve and display all connections
+ *                                   of a specified user in the graph.
  *
  * Preconditions:
  *    - 'graph' is a valid Graph object.
@@ -193,7 +212,8 @@ void clearGraphWithConfirmation(Graph &graph);
  * Preconditions:
  *    - 'graph' is a valid Graph object.
  *
- * Postconditions: All users are removed from the graph if confirmed by the user.
+ * Postconditions: All users are removed from
+ *                             the graph if confirmed by the user.
  *****************************************************************************/
 void clearUsersWithConfirmation(Graph &graph);
 
@@ -206,7 +226,8 @@ void clearUsersWithConfirmation(Graph &graph);
  *    - 'fileName' is the name of a valid file containing user data.
  *    - 'graph' is a valid Graph object.
  *
- * Postconditions: Users are added to the graph based on the data read from the file.
+ * Postconditions: Users are added to the graph
+ *                                     based on the data read from the file.
  *****************************************************************************/
 void readUsersFromFile(const string &fileName, Graph &graph);
 
@@ -220,9 +241,11 @@ void readUsersFromFile(const string &fileName, Graph &graph);
  *    - 'fileName' is the name of a valid file containing connection data.
  *    - 'graph' is a valid Graph object.
  *
- * Postconditions: Connections are added to the graph based on the data read from the file.
+ * Postconditions: Connections are added to the
+ *                                 graph based on the data read from the file.
  *****************************************************************************/
-void readConnectionsFromFile(const string &folderName, const string &fileName, Graph &graph);
+void readConnectionsFromFile(const string &folderName,
+                             const string &fileName, Graph &graph);
 
 int main()
 {
@@ -449,14 +472,16 @@ void addConnectionBetweenUsers(Graph &graph)
   cin >> user1;
   if (!graph.searchUser(user1))
   {
-    cout << "User not found. Please enter a valid user name next time." << endl;
+    cout << "User not found. Please enter a valid user name next time."
+         << endl;
     return;
   }
   cout << "Enter the second user name: ";
   cin >> user2;
   if (!graph.searchUser(user2))
   {
-    cout << "User not found. Please enter a valid user name next time." << endl;
+    cout << "User not found. Please enter a valid user name next time."
+         << endl;
     return;
   }
   cout << "Enter the weight of the connection (when a negative weight is "
@@ -544,7 +569,8 @@ void deleteAllConnectionsOfUser(Graph &graph)
   if (choiceOfUser == 'Y' || choiceOfUser == 'y')
   {
     graph.deleteConnectionsOfUser(userName);
-    cout << "All connections of user '" << userName << "' deleted successfully."
+    cout << "All connections of user '" << userName
+         << "' deleted successfully."
          << endl;
   }
   else
@@ -726,7 +752,8 @@ void clearGraphWithConfirmation(Graph &graph)
 
   do
   {
-    cout << "Are you sure? (Y/y for yes, N/n for no) Clearing the graph will remove all connections: ";
+    cout << "Are you sure? (Y/y for yes, N/n for no) "
+         << " Clearing the graph will remove all connections: ";
     cin >> choiceOfUser;
 
     if (choiceOfUser == 'Y' || choiceOfUser == 'y')
@@ -743,8 +770,9 @@ void clearGraphWithConfirmation(Graph &graph)
     else
     {
       cout << "Invalid input. Please enter Y/y or N/n." << endl;
-      cin.clear();                                         // Clear any error flags
-      cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard the input buffer
+      cin.clear(); // Clear any error flags
+      cin.ignore(numeric_limits<streamsize>::max(),
+                 '\n'); // Discard the input buffer
     }
   } while (true); // Repeat until a valid choice is entered
 }
@@ -755,7 +783,8 @@ void clearUsersWithConfirmation(Graph &graph)
   char choiceOfUser;
   do
   {
-    cout << "Are you sure? (Y/y for yes, N/n for no) This option will delete all the users from your graph: ";
+    cout << "Are you sure? (Y/y for yes, N/n for no)"
+         << " This option will delete all the users from your graph: ";
     cin >> choiceOfUser;
 
     if (choiceOfUser == 'Y' || choiceOfUser == 'y')
@@ -772,8 +801,9 @@ void clearUsersWithConfirmation(Graph &graph)
     else
     {
       cout << "Invalid input. Please enter Y/y for yes or N/n for no." << endl;
-      cin.clear();                                         // Clear any error flags
-      cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard the input buffer
+      cin.clear(); // Clear any error flags
+      cin.ignore(numeric_limits<streamsize>::max(),
+                 '\n'); // Discard the input buffer
     }
   } while (true);
 }

@@ -17,11 +17,13 @@ class UserProfile;
 /******************************************************************************
  * Class: Graph
  *
- * Description: Represents a graph data structure to store users and connections between them.
+ * Description: Represents a graph data structure to
+ *                                   store users and connections between them.
  *
  * Member Variables:
  *    - users: An unordered map to store user profiles.
- *    - adj: An unordered map representing the adjacency list to store connections between users.
+ *    - adj: An unordered map representing the adjacency list
+ *                                          to store connections between users.
  *
  *****************************************************************************/
 class Graph
@@ -112,7 +114,7 @@ public:
         - 'userName' is a valid username in the graph.
 
       Postconditions:
-        - Returns a vector containing usernames connected to the specified user.
+        -Returns a vector containing usernames connected to the specified user.
         */
 
   UserProfile *searchUser(const string &username);
@@ -123,7 +125,7 @@ public:
       - 'username' is a valid username.
 
     Postconditions:
-      - Returns a pointer to the UserProfile object if found; otherwise, nullptr.
+   - Returns a pointer to the UserProfile object if found; otherwise, nullptr.
       */
   bool addUser(UserProfile *user);
   /*-------------------------------------------------------------------------
@@ -172,7 +174,7 @@ public:
       - 'src' and 'dest' are valid usernames.
 
     Postconditions:
-      - Returns true if there is a connection between the users; otherwise, false.
+  - Returns true if there is a connection between the users; otherwise, false.
       */
 
   /***** Graph Operations *****/
@@ -190,7 +192,8 @@ public:
 
     Preconditions: None.
 
-    Postconditions: Removes all users from the graph while keeping connections intact.
+    Postconditions: Removes all users from the graph
+                                       while keeping connections intact.
     */
   void printGraph();
   /*-------------------------------------------------------------------------
@@ -202,45 +205,49 @@ public:
    */
   vector<string> dfsTraversal(const string &startUserName);
   /*-------------------------------------------------------------------------
-    Perform Depth First Search (DFS) traversal starting from the specified user.
+  Perform Depth First Search (DFS) traversal starting from the specified user.
 
     Preconditions:
       - 'startUserName' is a valid username in the graph.
 
-    Postconditions: Returns a vector containing the usernames visited during DFS.
+  Postconditions: Returns a vector containing the usernames visited during DFS.
 */
   vector<string> bfsTraversal(const string &startUserName);
   /*-------------------------------------------------------------------------
-    Perform Breadth First Search (BFS) traversal starting from the specified user.
+Perform Breadth First Search (BFS) traversal starting from the specified user.
 
     Preconditions:
       - 'startUserName' is a valid username in the graph.
 
-    Postconditions: Returns a vector containing the usernames visited during BFS.
+Postconditions: Returns a vector containing the usernames visited during BFS.
     */
-  vector<UserProfile *> astar(const string &startUserName, const string &goalUserName);
+  vector<UserProfile *> astar(const string &startUserName,
+                              const string &goalUserName);
   /*-------------------------------------------------------------------------
     Find the shortest path between two users using A* algorithm.
 
     Preconditions:
       - 'startUserName' and 'goalUserName' are valid usernames in the graph.
 
-    Postconditions: Returns a vector containing the UserProfile pointers representing
-    the shortest path between the users.
+    Postconditions: Returns a vector containing
+     the UserProfile pointers representing the shortest path between the users.
     */
-  vector<UserProfile *> dijkstra(const string &startUserName, const string &endUserName);
+  vector<UserProfile *> dijkstra(const string &startUserName,
+                                 const string &endUserName);
   /*-------------------------------------------------------------------------
     Find the shortest path between two users using Dijkstra's algorithm.
 
     Preconditions:
       - 'startUserName' and 'endUserName' are valid usernames in the graph.
 
-    Postconditions: Returns a vector containing the UserProfile pointers representing
-    the shortest path between the users.
+    Postconditions: Returns a vector containing the UserProfile
+               pointers representing the shortest path between the users.
     */
-  unordered_map<string, pair<int, string>> bellmanFordShortestPath(const string &startNode);
+  unordered_map<string, pair<int, string>>
+  bellmanFordShortestPath(const string &startNode);
   /*-------------------------------------------------------------------------
-    Find the shortest path from a source node to all other nodes using Bellman-Ford algorithm.
+    Find the shortest path from a source node
+                              to all other nodes using Bellman-Ford algorithm.
 
     Preconditions:
       - 'startNode' is a valid username in the graph.
@@ -248,7 +255,8 @@ public:
     Postconditions: Returns an unordered map containing the shortest distances and
     predecessors for each node.
     */
-  vector<string> shortestPathUsingBellmandFord(const string &startNode, const string &endNode);
+  vector<string> shortestPathUsingBellmandFord(const string &startNode,
+                                               const string &endNode);
   /*-------------------------------------------------------------------------
     Find the shortest path between two nodes using Bellman-Ford algorithm.
 
@@ -296,7 +304,8 @@ public:
 
 private:
   /***** Private Functions *****/
-  void dfsUtil(const string &node, unordered_set<string> &visited, vector<string> &path);
+  void dfsUtil(const string &node, unordered_set<string> &visited,
+               vector<string> &path);
   /*-------------------------------------------------------------------------
     Utility function for Depth First Search (DFS) traversal.
 
@@ -316,7 +325,8 @@ private:
       */
   vector<int> shortestPath(const string &src);
   /*-------------------------------------------------------------------------
-    Find the shortest path from a source node to all other nodes using Dijkstra's algorithm.
+    Find the shortest path from a source node to
+                       all other nodes using Dijkstra's algorithm.
 
     Parameters:
       - 'src': The source node from which to find the shortest paths.
@@ -325,7 +335,8 @@ private:
       - 'src' is a valid username in the graph.
 
     Postconditions:
-      - Returns a vector containing the shortest distances from the source node to all other nodes.
+      - Returns a vector containing the shortest distances
+                       from the source node to all other nodes.
   -------------------------------------------------------------------------*/
 
   /***** Member Variables *****/
