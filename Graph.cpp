@@ -455,7 +455,8 @@ void Graph::generateDOTFile(const string &fileName) {
         string edge = source + " -- " + destination;
         if (processedEdges.find(edge) == processedEdges.end()) {
           processedEdges.insert(edge);
-          dotFile << "  " << edge << " [label=\"" << connection->getWeight() << "\"];\n";
+          dotFile << "  " << edge << " [label=\"" << connection->getWeight()
+                  << "\"];\n";
         }
       }
     }
@@ -466,12 +467,6 @@ void Graph::generateDOTFile(const string &fileName) {
 
   dotFile.close();
 }
-
-
-
- 
-
-
 
 // Function to render the graph visualization using Graphviz
 void Graph::renderGraph(const string &dotFileName,
@@ -485,6 +480,8 @@ void Graph::renderGraph(const string &dotFileName,
   }
 
   cout << "Graph visualization saved as " << outputFileName << endl;
+  command = "start " + outputFileName;
+  system(command.c_str());
 }
 
 // Function to perform Depth First Search traversal
