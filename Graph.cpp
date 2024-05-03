@@ -74,6 +74,14 @@ void Graph::deleteConnectionsOfUser(const string &username)
       delete connection;
     }
     adj[username].clear();
+
+    // Remove any connections pointing to the user
+    for (auto &entry : adj)
+    {
+      entry.second.remove_if([username](Connection *connection) {
+        return connection->getDestination()->getUserName() == username;
+      });
+    }
   }
 }
 
@@ -95,7 +103,7 @@ bool Graph::removeUser(const string &username)
 // Function to remove an edge/connection between user1 and user2
 bool Graph::removeConnection(const string &src, const string &dest)
 {
-  // Check if the source user exists in the graph
+  // Check if the source user and destination exist in the graph
   if (adj.find(src) != adj.end())
   {
     // Iterate through the connections of the source user
@@ -106,9 +114,15 @@ bool Graph::removeConnection(const string &src, const string &dest)
       {
         // Remove the connection from the adjacency list
         adj[src].remove(connection);
-        adj[dest].remove(connection);
+        // adj[dest].remove(connection);
         delete connection;
-        return true;
+        for(auto connection2 : adj[dest]){
+          if(connection2->getDestination()->getUserName() == src){
+            adj[dest].remove(connection2);
+            delete connection2;
+            return true;
+          }
+        }
       }
     }
   }
@@ -205,6 +219,10 @@ void Graph::clearGraph()
 // Function to remove all users
 void Graph::clearUsers()
 {
+  // Clear the adjacency list
+  clearGraph();
+
+  // Clear the users map
   for (auto &user : users)
   {
     delete user.second;
