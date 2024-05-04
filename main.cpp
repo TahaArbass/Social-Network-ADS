@@ -1,7 +1,8 @@
 /******************************************************************************
- * Fares Najjar & Taha arbas
+ * Fares Najjar & Taha Arbass
  * ADS project (Spring 2024)
  * Instructor : Dr.Charbel Obied
+
     Implementation of main.cpp:
     displayMenu: Function to display the menu options.
     addUserToGraph: Function to add a user to the graph.
@@ -244,11 +245,10 @@ void readUsersFromFile(const string &fileName, Graph &graph);
  * Postconditions: Connections are added to the
  *                                 graph based on the data read from the file.
  *****************************************************************************/
-void readConnectionsFromFile(const string &folderName,
-                             const string &fileName, Graph &graph);
+void readConnectionsFromFile(const string &folderName, const string &fileName,
+                             Graph &graph);
 
-int main()
-{
+int main() {
   // Create a graph object
   Graph graph;
   // Read users from a file and add them to the graph
@@ -260,12 +260,10 @@ int main()
   int choice;
   char choiceOfUser;
   string userName;
-  do
-  {
+  do {
     displayMenu();
     cin >> choice;
-    switch (choice)
-    {
+    switch (choice) {
       // Add user
     case 1:
       addUserToGraph(graph);
@@ -318,10 +316,13 @@ int main()
       break;
     case 13:
       // Display graph analysis
-      cout << "Average Degree: " << graph.calculateAverageDegree() << endl;
-      cout << "Diameter: " << graph.calculateDiameter() << endl;
-      cout << "\nThe number of Users : " << graph.getNumOfUsers() << endl;
-      cout << "\nThe number of connections : " << graph.getNumOfConnections()
+      cout << "\nGraph Analysis:" << endl;
+      cout << "How dense are the connections: Average Degree: "
+           << graph.calculateAverageDegree() << endl;
+      cout << "The longest path among the shortest paths: Diameter: "
+           << graph.calculateDiameter() << endl;
+      cout << "The number of Users : " << graph.getNumOfUsers() << endl;
+      cout << "The number of connections : " << graph.getNumOfConnections()
            << endl;
       break;
     case 14:
@@ -358,8 +359,7 @@ int main()
   return 0;
 };
 
-void displayMenu()
-{
+void displayMenu() {
   cout << "\n==============================\n";
   cout << "             Menu             \n";
   cout << "==============================\n";
@@ -384,18 +384,17 @@ void displayMenu()
   cout << "==============================\n";
   cout << "Enter a choice: ";
 }
-void addUserToGraph(Graph &graph)
-{
+
+// Option 1: add user
+void addUserToGraph(Graph &graph) {
   string username, fname, lname, email;
 
   bool userNameApproved = false;
-  do
-  {
+  do {
     cout << "Enter a user name: ";
     cin >> username;
 
-    if (!graph.isUserNameTaken(username))
-    {
+    if (!graph.isUserNameTaken(username)) {
       cout << "Enter first name: ";
       cin >> fname;
       cout << "Enter last name: ";
@@ -405,26 +404,21 @@ void addUserToGraph(Graph &graph)
 
       // Create UserProfile object and add it to the graph
       UserProfile *user = new UserProfile(username, fname, lname, email);
-      if (graph.addUser(user))
-      {
+      if (graph.addUser(user)) {
         cout << "User added successfully." << endl;
         userNameApproved = true; // Set flag to exit loop
-      }
-      else
-      {
+      } else {
         cout << "Failed to add user." << endl;
       }
-    }
-    else
-    {
+    } else {
       cout << "The username '" << username
            << "' is already taken. Please try a different one." << endl;
     }
   } while (!userNameApproved);
 };
 
-void deleteUserFromGraph(Graph &graph)
-{
+// Option 2: delete user
+void deleteUserFromGraph(Graph &graph) {
   string userName;
   char choiceOfUser;
 
@@ -432,56 +426,43 @@ void deleteUserFromGraph(Graph &graph)
   cin >> userName;
 
   bool validChoice = false;
-  do
-  {
+  do {
     cout << "Are you sure that you want to delete the user '" << userName
          << "'? Deleting will remove all the connections associated with the "
             "user. (Y/y for yes, N/n for no): ";
     cin >> choiceOfUser;
 
-    if (choiceOfUser == 'Y' || choiceOfUser == 'y')
-    {
-      if (graph.removeUser(userName))
-      {
+    if (choiceOfUser == 'Y' || choiceOfUser == 'y') {
+      if (graph.removeUser(userName)) {
         cout << "User '" << userName << "' deleted successfully." << endl;
-      }
-      else
-      {
+      } else {
         cout << "User '" << userName << "' not found." << endl;
       }
       validChoice = true;
-    }
-    else if (choiceOfUser == 'N' || choiceOfUser == 'n')
-    {
+    } else if (choiceOfUser == 'N' || choiceOfUser == 'n') {
       cout << "Deletion cancelled." << endl;
       validChoice = true;
-    }
-    else
-    {
+    } else {
       cout << "Invalid input. Please enter 'Y' or 'N'." << endl;
     }
   } while (!validChoice);
 }
 
-void addConnectionBetweenUsers(Graph &graph)
-{
+// Option 3: add connection between 2 users
+void addConnectionBetweenUsers(Graph &graph) {
   string user1, user2;
   int weight;
 
   cout << "Enter the first user name: ";
   cin >> user1;
-  if (!graph.searchUser(user1))
-  {
-    cout << "User not found. Please enter a valid user name next time."
-         << endl;
+  if (!graph.searchUser(user1)) {
+    cout << "User not found. Please enter a valid user name next time." << endl;
     return;
   }
   cout << "Enter the second user name: ";
   cin >> user2;
-  if (!graph.searchUser(user2))
-  {
-    cout << "User not found. Please enter a valid user name next time."
-         << endl;
+  if (!graph.searchUser(user2)) {
+    cout << "User not found. Please enter a valid user name next time." << endl;
     return;
   }
   cout << "Enter the weight of the connection (when a negative weight is "
@@ -494,12 +475,9 @@ void addConnectionBetweenUsers(Graph &graph)
   Connection *connection = new Connection(userProfile1, userProfile2, weight);
 
   // Add the connection to the graph
-  if (graph.addConnection(connection))
-  {
+  if (graph.addConnection(connection)) {
     cout << "Connection added successfully." << endl;
-  }
-  else
-  {
+  } else {
     cout << "Failed to add connection. One or both users not found or "
             "connection already exists."
          << endl;
@@ -507,8 +485,8 @@ void addConnectionBetweenUsers(Graph &graph)
   }
 }
 
-void deleteConnectionBetweenUsers(Graph &graph)
-{
+// Option 4: delete connection between 2 users
+void deleteConnectionBetweenUsers(Graph &graph) {
   string user1, user2;
   char choiceOfUser;
 
@@ -522,115 +500,124 @@ void deleteConnectionBetweenUsers(Graph &graph)
   cin >> choiceOfUser;
 
   while (choiceOfUser != 'Y' && choiceOfUser != 'y' && choiceOfUser != 'N' &&
-         choiceOfUser != 'n')
-  {
+         choiceOfUser != 'n') {
     cout << "Invalid choice. Please enter Y/y for yes or N/n for no: ";
     cin >> choiceOfUser;
   }
 
-  if (choiceOfUser == 'Y' || choiceOfUser == 'y')
-  {
-    if (graph.removeConnection(user1, user2))
-    {
+  if (choiceOfUser == 'Y' || choiceOfUser == 'y') {
+    if (graph.removeConnection(user1, user2)) {
       cout << "Connection between " << user1 << " and " << user2
            << " deleted successfully." << endl;
-    }
-    else
-    {
+    } else {
       cout << "Failed to delete connection. Connection between " << user1
            << " and " << user2 << " not found." << endl;
     }
-  }
-  else
-  {
+  } else {
     cout << "Deletion cancelled." << endl;
   }
 }
 
-void deleteAllConnectionsOfUser(Graph &graph)
-{
+// Option 5: delete all connections of a user
+void deleteAllConnectionsOfUser(Graph &graph) {
   string userName;
   char choiceOfUser;
 
   cout << "Enter the user name to delete all connections: ";
   cin >> userName;
 
+  if (!graph.searchUser(userName)) {
+    cout << "User not found. Please enter a valid user name next time." << endl;
+    return;
+  }
+
   cout << "Are you sure that you want to delete all connections of '"
        << userName << "'? (Y/y for yes, N/n for no): ";
   cin >> choiceOfUser;
 
   while (choiceOfUser != 'Y' && choiceOfUser != 'y' && choiceOfUser != 'N' &&
-         choiceOfUser != 'n')
-  {
+         choiceOfUser != 'n') {
     cout << "Invalid choice. Please enter Y/y for yes or N/n for no: ";
     cin >> choiceOfUser;
   }
 
-  if (choiceOfUser == 'Y' || choiceOfUser == 'y')
-  {
+  if (choiceOfUser == 'Y' || choiceOfUser == 'y') {
     graph.deleteConnectionsOfUser(userName);
-    cout << "All connections of user '" << userName
-         << "' deleted successfully."
+    cout << "All connections of user '" << userName << "' deleted successfully."
          << endl;
-  }
-  else
-  {
+  } else {
     cout << "Deletion cancelled." << endl;
   }
 }
 
-void isUserConnectedToAnother(Graph &graph)
-{
+// Option 8: is a user connected directly to another?
+void isUserConnectedToAnother(Graph &graph) {
   string user1, user2;
   cout << "Enter the first user name: ";
   cin >> user1;
+
+  if (!graph.searchUser(user1)) {
+    cout << "User not found. Please enter a valid user name." << endl;
+    return;
+  }
+
   cout << "Enter the second user name: ";
   cin >> user2;
-  if (graph.isConnected(user1, user2))
-  {
-    cout << "User " << user1 << " is connected to user " << user2 << endl;
+
+  if (!graph.searchUser(user2)) {
+    cout << "User not found. Please enter a valid user name." << endl;
+    return;
   }
-  else
-  {
+
+  if(user1 == user2) {
+    cout << "User 1 and User 2 are the same user." << endl;
+    return;
+  }
+  if (graph.isConnected(user1, user2)) {
+    cout << "User " << user1 << " is connected to user " << user2 << endl;
+  } else {
     cout << "User " << user1 << " is not connected to user " << user2 << endl;
   }
 }
 
-void bfsTraversal(Graph &graph)
-{
+// Option 9: Breadth First Search (BFS) Traversal
+void bfsTraversal(Graph &graph) {
   string startUserName;
   cout << "Enter the starting user name for BFS traversal: ";
   cin >> startUserName;
 
   vector<string> bfsTraversal = graph.bfsTraversal(startUserName);
-  cout << "BFS Traversal: ";
-  for (const auto &user : bfsTraversal)
-  {
-    cout << user << " ";
+  if (bfsTraversal.size() != 0) {
+    cout << "BFS Traversal: ";
+    for (const auto &user : bfsTraversal) {
+      cout << user << " ,  ";
+    }
+    cout << "End" << endl;
+    cout << endl;
   }
-  cout << endl;
 }
 
-void dfsTraversal(Graph &graph)
-{
+// Option 10: Depth First Search (DFS) Traversal
+void dfsTraversal(Graph &graph) {
   string startUserName;
   cout << "Enter the starting user name for DFS traversal: ";
   cin >> startUserName;
 
   vector<string> dfsTraversal = graph.dfsTraversal(startUserName);
-  cout << "DFS Traversal: ";
-  for (const auto &user : dfsTraversal)
-  {
-    cout << user << " ";
+  if (dfsTraversal.size() != 0) {
+    cout << "DFS Traversal: ";
+    for (const auto &user : dfsTraversal) {
+      cout << user << " ,  ";
+    }
+    cout << "End" << endl;
+    cout << endl;
   }
-  cout << endl;
 }
 
-void shortestPathBetweenUsers(Graph &graph)
-{
+// Option 11: Find shortest path between 2 users
+void shortestPathBetweenUsers(Graph &graph) {
   int choice = 0;
-  do
-  {
+  do {
     cout << "Find Shortest Path Using:\n"
          << "1. Djikstra.\n"
          << "2. Bellman Ford.\n"
@@ -640,8 +627,7 @@ void shortestPathBetweenUsers(Graph &graph)
     cin >> choice;
 
     // Check if choice is to return to the menu
-    if (choice == 4)
-    {
+    if (choice == 4) {
       // Exit loop and return to the menu
       break;
     }
@@ -651,8 +637,7 @@ void shortestPathBetweenUsers(Graph &graph)
     cin >> user1;
 
     // Check if user1 is valid
-    if (!graph.searchUser(user1))
-    {
+    if (!graph.searchUser(user1)) {
       cout << "User not found. Please enter a valid user name." << endl;
       continue;
     }
@@ -662,66 +647,58 @@ void shortestPathBetweenUsers(Graph &graph)
     cin >> user2;
 
     // Check if user2 is valid
-    if (!graph.searchUser(user2))
-    {
+    if (!graph.searchUser(user2)) {
       cout << "User not found. Please enter a valid user name." << endl;
       continue;
     }
 
     // Perform the selected shortest path algorithm based on choice
-    switch (choice)
-    {
-    case 1:
-    {
+    switch (choice) {
+    case 1: {
       vector<UserProfile *> dijkstraPath = graph.dijkstra(user1, user2);
       cout << "Dijkstra Shortest Path from " << user1 << " to " << user2
            << ": ";
       // If no path found
-      if (dijkstraPath.empty())
-      {
+      if (dijkstraPath.empty()) {
         cout << "No path found." << endl;
         break;
       }
-      for (const auto &user : dijkstraPath)
-      {
-        cout << user->getUserName() << " ";
+      for (const auto &user : dijkstraPath) {
+        cout << user->getUserName() << " -> ";
       }
+      cout << "End" << endl;
       cout << endl;
       break;
     }
-    case 2:
-    {
+    case 2: {
       vector<string> bellmanFordPath =
           graph.shortestPathUsingBellmandFord(user1, user2);
       cout << "Bellman-Ford Shortest Path from " << user1 << " to " << user2
            << ": ";
       // If no path found
-      if (bellmanFordPath.empty())
-      {
+      if (bellmanFordPath.empty()) {
         cout << "No path found." << endl;
         break;
       }
-      for (const auto &user : bellmanFordPath)
-      {
-        cout << user << " ";
+      for (const auto &user : bellmanFordPath) {
+        cout << user << " -> ";
       }
+      cout << "End" << endl;
       cout << endl;
       break;
     }
-    case 3:
-    {
+    case 3: {
       vector<UserProfile *> astarPath = graph.astar(user1, user2);
       cout << "A* Shortest Path from " << user1 << " to " << user2 << ": ";
       // If no path found
-      if (astarPath.empty())
-      {
+      if (astarPath.empty()) {
         cout << "No path found." << endl;
         break;
       }
-      for (const auto &user : astarPath)
-      {
-        cout << user->getUserName() << " ";
+      for (const auto &user : astarPath) {
+        cout << user->getUserName() << " -> ";
       }
+      cout << "End" << endl;
       cout << endl;
       break;
     }
@@ -731,44 +708,50 @@ void shortestPathBetweenUsers(Graph &graph)
   } while (true);
 }
 
-void getAndDisplayConnectionsOfUser(Graph &graph)
-{
+// Option 12: Get all connections of a user
+void getAndDisplayConnectionsOfUser(Graph &graph) {
   cout << "Enter the user name to get connections: ";
   string userName;
   cin >> userName;
+
+  // Check if the user exists in the graph
+  if (!graph.searchUser(userName)) {
+    cout << "User not found. Please enter a valid user name." << endl;
+    return;
+  }
+
   vector<string> connectedUsers = graph.getConnectedUsers(userName);
+
+  // Check if the user has any connections
+  if (connectedUsers.empty()) {
+    cout << "No connections found for user " << userName << endl;
+    return;
+  }
+  // Display the connections of the user
   cout << "Connections of user " << userName << ": ";
-  for (const auto &user : connectedUsers)
-  {
+  for (const auto &user : connectedUsers) {
     cout << user << ", ";
   }
   cout << endl;
 }
 
-// option 15
-void clearGraphWithConfirmation(Graph &graph)
-{
+// Option 15: clear graph
+void clearGraphWithConfirmation(Graph &graph) {
   char choiceOfUser;
 
-  do
-  {
+  do {
     cout << "Are you sure? (Y/y for yes, N/n for no) "
          << " Clearing the graph will remove all connections: ";
     cin >> choiceOfUser;
 
-    if (choiceOfUser == 'Y' || choiceOfUser == 'y')
-    {
+    if (choiceOfUser == 'Y' || choiceOfUser == 'y') {
       graph.clearGraph();
       cout << "Graph cleared." << endl;
       return; // Exit the function after successful clearing
-    }
-    else if (choiceOfUser == 'N' || choiceOfUser == 'n')
-    {
+    } else if (choiceOfUser == 'N' || choiceOfUser == 'n') {
       cout << "Cancelled operation." << endl;
       return; // Exit the function if the user cancels the operation
-    }
-    else
-    {
+    } else {
       cout << "Invalid input. Please enter Y/y or N/n." << endl;
       cin.clear(); // Clear any error flags
       cin.ignore(numeric_limits<streamsize>::max(),
@@ -777,29 +760,22 @@ void clearGraphWithConfirmation(Graph &graph)
   } while (true); // Repeat until a valid choice is entered
 }
 
-// option 16
-void clearUsersWithConfirmation(Graph &graph)
-{
+// Option 16: clear all users
+void clearUsersWithConfirmation(Graph &graph) {
   char choiceOfUser;
-  do
-  {
+  do {
     cout << "Are you sure? (Y/y for yes, N/n for no)"
          << " This option will delete all the users from your graph: ";
     cin >> choiceOfUser;
 
-    if (choiceOfUser == 'Y' || choiceOfUser == 'y')
-    {
+    if (choiceOfUser == 'Y' || choiceOfUser == 'y') {
       graph.clearUsers();
       cout << "All users have been removed from the graph." << endl;
       return;
-    }
-    else if (choiceOfUser == 'N' || choiceOfUser == 'n')
-    {
+    } else if (choiceOfUser == 'N' || choiceOfUser == 'n') {
       cout << "Operation cancelled." << endl;
       return;
-    }
-    else
-    {
+    } else {
       cout << "Invalid input. Please enter Y/y for yes or N/n for no." << endl;
       cin.clear(); // Clear any error flags
       cin.ignore(numeric_limits<streamsize>::max(),
@@ -809,18 +785,16 @@ void clearUsersWithConfirmation(Graph &graph)
 }
 
 // Read users from a file and add them to the graph
-void readUsersFromFile(const string &fileName, Graph &graph)
-{
+void readUsersFromFile(const string &fileName, Graph &graph) {
   ifstream file(fileName);
-  if (!file.is_open())
-  {
+  if (!file.is_open()) {
     cerr << "Unable to open file: " << fileName << endl;
     return;
   }
 
+  // Read each line from the file and add the user to the graph
   string line;
-  while (getline(file, line))
-  {
+  while (getline(file, line)) {
     stringstream ss(line);
     string userName, firstName, lastName, email;
     ss >> userName >> firstName >> lastName >> email;
@@ -833,19 +807,16 @@ void readUsersFromFile(const string &fileName, Graph &graph)
 
 // Read connections from a file and add them to the graph
 void readConnectionsFromFile(const string &folderName, const string &fileName,
-                             Graph &graph)
-{
+                             Graph &graph) {
   string filePath = folderName + "/" + fileName;
   ifstream file(filePath);
-  if (!file.is_open())
-  {
+  if (!file.is_open()) {
     cerr << "Unable to open file: " << filePath << endl;
     return;
   }
 
   string line;
-  while (getline(file, line))
-  {
+  while (getline(file, line)) {
     stringstream ss(line);
     string sourceUserName, destUserName;
     int weight;
@@ -854,8 +825,8 @@ void readConnectionsFromFile(const string &folderName, const string &fileName,
     UserProfile *sourceUser = graph.searchUser(sourceUserName);
     UserProfile *destUser = graph.searchUser(destUserName);
 
-    if (sourceUser && destUser)
-    {
+    // If both users are found, create a connection between them
+    if (sourceUser && destUser) {
       Connection *connection = new Connection(sourceUser, destUser, weight);
       graph.addConnection(connection);
     }
