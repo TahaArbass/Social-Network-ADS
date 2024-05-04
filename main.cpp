@@ -248,14 +248,26 @@ void readUsersFromFile(const string &fileName, Graph &graph);
 void readConnectionsFromFile(const string &folderName, const string &fileName,
                              Graph &graph);
 
+/******************************************************************************
+ * Function: loadPreFilledData
+ *
+ * Purpose: Load pre-filled data into the graph.
+ *
+ * Preconditions:
+ *    - 'graph' is a valid Graph object.
+ *
+ * Postconditions: Pre-filled data is loaded into the graph.
+ *****************************************************************************/
+void loadPreFilledData(Graph &graph);
+
 int main() {
   // Create a graph object
   Graph graph;
   // Read users from a file and add them to the graph
-  readUsersFromFile("resources/users.txt", graph);
+  readUsersFromFile("my_data/my_users.txt", graph);
 
   // Read connections from a file and add them to the graph
-  readConnectionsFromFile("resources", "connections.txt", graph);
+  readConnectionsFromFile("my_data", "my_connections.txt", graph);
 
   int choice;
   char choiceOfUser;
@@ -263,6 +275,15 @@ int main() {
   do {
     displayMenu();
     cin >> choice;
+
+    // if a non numeric value is entered
+    if (cin.fail()) {
+      cin.clear(); // Clear any error flags
+      cin.ignore(numeric_limits<streamsize>::max(),
+                 '\n'); // Discard the input buffer
+      choice = 0;       // Set choice to 0 to display the menu again
+    }
+
     switch (choice) {
       // Add user
     case 1:
@@ -347,6 +368,10 @@ int main() {
 
       break;
     case 18:
+      // Load pre-filled data
+      loadPreFilledData(graph);
+      break;
+    case 19:
       // Exit
       cout << "Exiting program..." << endl;
       break;
@@ -354,7 +379,7 @@ int main() {
       cout << "Invalid choice. Please enter a valid option." << endl;
     }
 
-  } while (choice != 18);
+  } while (choice != 19);
 
   return 0;
 };
@@ -380,7 +405,8 @@ void displayMenu() {
   cout << "15. Clear graph\n";
   cout << "16. Clear Users\n";
   cout << "17. Display User Info\n";
-  cout << "18. Exit\n";
+  cout << "18. Load pre-filled data (Current Data will be lost)\n";
+  cout << "19. Exit\n";
   cout << "==============================\n";
   cout << "Enter a choice: ";
 }
@@ -406,6 +432,9 @@ void addUserToGraph(Graph &graph) {
       UserProfile *user = new UserProfile(username, fname, lname, email);
       if (graph.addUser(user)) {
         cout << "User added successfully." << endl;
+        // Write the users to a file
+        graph.writeUsersToFile("my_data/my_users.txt");
+
         userNameApproved = true; // Set flag to exit loop
       } else {
         cout << "Failed to add user." << endl;
@@ -435,6 +464,8 @@ void deleteUserFromGraph(Graph &graph) {
     if (choiceOfUser == 'Y' || choiceOfUser == 'y') {
       if (graph.removeUser(userName)) {
         cout << "User '" << userName << "' deleted successfully." << endl;
+        // Write the users to a file
+        graph.writeUsersToFile("my_data/my_users.txt");
       } else {
         cout << "User '" << userName << "' not found." << endl;
       }
@@ -477,6 +508,8 @@ void addConnectionBetweenUsers(Graph &graph) {
   // Add the connection to the graph
   if (graph.addConnection(connection)) {
     cout << "Connection added successfully." << endl;
+    // Write the connections to a file
+    graph.writeConnectionsToFile("my_data/my_connections.txt");
   } else {
     cout << "Failed to add connection. One or both users not found or "
             "connection already exists."
@@ -509,6 +542,8 @@ void deleteConnectionBetweenUsers(Graph &graph) {
     if (graph.removeConnection(user1, user2)) {
       cout << "Connection between " << user1 << " and " << user2
            << " deleted successfully." << endl;
+      // Write the connections to a file
+      graph.writeConnectionsToFile("my_data/my_connections.txt");
     } else {
       cout << "Failed to delete connection. Connection between " << user1
            << " and " << user2 << " not found." << endl;
@@ -545,6 +580,8 @@ void deleteAllConnectionsOfUser(Graph &graph) {
     graph.deleteConnectionsOfUser(userName);
     cout << "All connections of user '" << userName << "' deleted successfully."
          << endl;
+    // Write the connections to a file
+    graph.writeConnectionsToFile("my_data/my_connections.txt");
   } else {
     cout << "Deletion cancelled." << endl;
   }
@@ -569,7 +606,7 @@ void isUserConnectedToAnother(Graph &graph) {
     return;
   }
 
-  if(user1 == user2) {
+  if (user1 == user2) {
     cout << "User 1 and User 2 are the same user." << endl;
     return;
   }
@@ -746,7 +783,11 @@ void clearGraphWithConfirmation(Graph &graph) {
 
     if (choiceOfUser == 'Y' || choiceOfUser == 'y') {
       graph.clearGraph();
+      // Write the connections to a file
+      graph.writeConnectionsToFile("my_data/my_connections.txt");
+
       cout << "Graph cleared." << endl;
+
       return; // Exit the function after successful clearing
     } else if (choiceOfUser == 'N' || choiceOfUser == 'n') {
       cout << "Cancelled operation." << endl;
@@ -770,6 +811,11 @@ void clearUsersWithConfirmation(Graph &graph) {
 
     if (choiceOfUser == 'Y' || choiceOfUser == 'y') {
       graph.clearUsers();
+      // Write the users to a file
+      graph.writeUsersToFile("my_data/my_users.txt");
+      // Write the connections to a file
+      graph.writeConnectionsToFile("my_data/my_connections.txt");
+
       cout << "All users have been removed from the graph." << endl;
       return;
     } else if (choiceOfUser == 'N' || choiceOfUser == 'n') {
@@ -833,4 +879,22 @@ void readConnectionsFromFile(const string &folderName, const string &fileName,
   }
 
   file.close();
+}
+
+// Option 18: Load pre-filled data into the graph
+void loadPreFilledData(Graph &graph) {
+  // Empty the graph from any previous data
+  graph.clearUsers();
+
+  // Read users from a file and add them to the graph
+  readUsersFromFile("resources/users.txt", graph);
+
+  // Read connections from a file and add them to the graph
+  readConnectionsFromFile("resources", "connections.txt", graph);
+
+  // Write the users to a file
+  graph.writeUsersToFile("my_data/my_users.txt");
+
+  // Write the connections to a file
+  graph.writeConnectionsToFile("my_data/my_connections.txt");
 }

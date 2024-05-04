@@ -640,3 +640,58 @@ vector<int> Graph::shortestPath(const string &src) {
   }
   return dist;
 }
+
+// Function to write Connections to a file
+void Graph::writeConnectionsToFile(const string &fileName) {
+  // open the file in trunc mode to overwrite the existing data
+  ofstream outFile(fileName, ios::trunc);
+  if (outFile.is_open()) {
+    // check if the graph is empty
+    if (!adj.empty()) {
+      for (const auto &pair : adj) {
+        const string &user = pair.first;
+        const list<Connection *> &connections = pair.second;
+        for (const auto &connection : connections) {
+          const string &sourceUser = user;
+          const string &destinationUser =
+              connection->getDestination()->getUserName();
+          if (sourceUser < destinationUser) {
+            outFile << sourceUser << " " << destinationUser << " "
+                    << connection->getWeight() << "\n";
+          }
+        }
+      }
+      cout << "Connection data has been written to " << fileName
+           << " successfully." << endl;
+    } else {
+      cout << "The graph is empty. No connection data to write." << endl;
+    }
+    outFile.close();
+  } else {
+    cerr << "Unable to open file: " << fileName << endl;
+  }
+}
+
+// Function to write Users to a file
+void Graph::writeUsersToFile(const string &fileName) {
+  // open the file in trunc mode to overwrite the existing data
+  ofstream outFile(fileName, ios::trunc);
+  if (outFile.is_open()) {
+    // check if the graph is empty
+    if (!users.empty()) {
+      for (auto const &pair : users) {
+        const string &userName = pair.first;
+        UserProfile *user = pair.second;
+        outFile << user->getUserName() << " " << user->getFirstName() << " "
+                << user->getLastName() << " " << user->getEmail() << "\n";
+      }
+      cout << "User data has been written to " << fileName << " successfully."
+           << endl;
+    } else {
+      cout << "The graph is empty. No user data to write." << endl;
+    }
+    outFile.close();
+  } else {
+    cerr << "Unable to open file: " << fileName << endl;
+  }
+}

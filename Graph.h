@@ -26,8 +26,7 @@ class UserProfile;
  *                                          to store connections between users.
  *
  *****************************************************************************/
-class Graph
-{
+class Graph {
 public:
   /***** Constructors and Destructor *****/
   // Default Constructor
@@ -252,8 +251,8 @@ Postconditions: Returns a vector containing the usernames visited during BFS.
     Preconditions:
       - 'startNode' is a valid username in the graph.
 
-    Postconditions: Returns an unordered map containing the shortest distances and
-    predecessors for each node.
+    Postconditions: Returns an unordered map containing the shortest distances
+    and predecessors for each node.
     */
   vector<string> shortestPathUsingBellmandFord(const string &startNode,
                                                const string &endNode);
@@ -302,6 +301,27 @@ Postconditions: Returns a vector containing the usernames visited during BFS.
     Postconditions: Returns the diameter of the graph.
   -------------------------------------------------------------------------*/
 
+  /***** File I/O *****/
+
+  void writeConnectionsToFile(const string &fileName);
+  /*-------------------------------------------------------------------------
+    Write connections to a file.
+
+    Preconditions:
+      - 'fileName' is a valid filename for the output file.
+
+    Postconditions: Writes the connections to the specified file.
+    */
+
+  void writeUsersToFile(const string &fileName);
+  /*-------------------------------------------------------------------------
+    Write users to a file.
+
+    Preconditions:
+      - 'fileName' is a valid filename for the output file.
+
+    Postconditions: Writes the users to the specified file.
+    */
 private:
   /***** Private Functions *****/
   void dfsUtil(const string &node, unordered_set<string> &visited,
