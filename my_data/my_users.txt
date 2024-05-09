@@ -2,6 +2,7 @@ Laura Laura Moore laura.moore@example.com
 William William Anderson william.anderson@example.com
 Linda Linda Lopez linda.lopez@example.com
 Lisa Lisa Martinez lisa.martinez@example.com
+Taha Taha Arbass taha@gmail.com
 Daniel Daniel Rodriguez daniel.rodriguez@example.com
 Susan Susan Davis susan.davis@example.com
 James James Miller james.miller@example.com
